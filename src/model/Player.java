@@ -26,12 +26,14 @@ public class Player {
 	public Player(String nickname) {
 		this.nickname = nickname;
 		this.scoreBoard = new ScoreBoard();
+		this.tiles = new ArrayList<Tile>();
 	}
 	
 	public Player(String nickname, Peer peer) {
 		this.nickname = nickname;
 		this.peer = peer;
 		this.scoreBoard = new ScoreBoard();
+		this.tiles = new ArrayList<Tile>();
 	}
 	
 	//***************************************************

@@ -38,6 +38,7 @@ public class PlayerController extends Controller {
 	//***************************************************
 	public void nickname(Peer peer, String nickname) {
 		Player player = ((ServerDatabase)this.getDatabase()).getPlayer(peer);
+		ServerDatabase database = (ServerDatabase)this.getDatabase();
 		
 		if(player == null) {
 			return;
@@ -46,6 +47,13 @@ public class PlayerController extends Controller {
 		if(player.getGame() != null) {
 			peer.write("403 You're not allowed to change your nickname during the game.");
 			return;
+		}
+		
+		for(Player p: database.getPlayers()) {
+			if(nickname.equals(p.getNickname())) {
+				peer.write("403 That nickname has already been chosen. Pick another one");
+				return;
+			}
 		}
 		
 		player.setNickname(nickname);

@@ -82,5 +82,15 @@ public class ServerDatabase implements Database {
 	public synchronized void setPeers(List<Peer> peers) {
 		this.peers = peers;
 	}
+
+	public List<Player> getPlayers() {
+		return players;
+	}
+
+	public void setPlayers(List<Player> players) {
+		this.players = players;
+	}
+	
+	
 	
 }
