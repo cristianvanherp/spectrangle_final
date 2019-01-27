@@ -29,6 +29,9 @@ public class GameController extends Controller {
 		case "drawnTile":
 			this.drawnTile(msg.getArgs().get(0), msg.getArgs().get(1));
 			break;
+		case "placedTile":
+			this.placedTile(msg.getArgs().get(0), msg.getArgs().get(1), msg.getArgs().get(2));
+			break;
 		case "requestMove":
 			this.requestMove();
 		default:
@@ -39,17 +42,13 @@ public class GameController extends Controller {
 	//***************************************************
 	//------------------PRIVATE METHODS------------------
 	//***************************************************
-	public void serverMessage(String msg) {
+	private void serverMessage(String msg) {
 		System.out.println("Server: " + msg);
 		System.out.print("> ");
 	}
 	
-	public void updateView() {
-		try {
-			Runtime.getRuntime().exec("cls");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	private void updateView() {
+		this.clearScreen();
 		
 		ClientDatabase database = (ClientDatabase)this.getDatabase();
 		Board board = database.getGame().getBoard();
@@ -57,16 +56,25 @@ public class GameController extends Controller {
 		System.out.print("> ");
 	}
 	
+	private void clearScreen() {  
+	    for(int i = 0 ; i < 100 ; i++) {
+	    	System.out.print("\n");
+	    }
+	}  
+	
 	public void start(List<String> args) {
 		ClientDatabase database = (ClientDatabase)this.getDatabase();
 		
-		args.remove(database.getPlayer().getNickname());
 		List<Player> players = new ArrayList<Player>();
 		
 		for(String nickname: args) {
-			players.add(new Player(nickname));
+			if(nickname.equals(database.getPlayer().getNickname())) {
+				players.add(database.getPlayer());
+			}
+			else {
+				players.add(new Player(nickname));
+			}
 		}
-		players.add(database.getPlayer());
 		
 		Game game = new Game(players, null);
 		database.setGame(game);
@@ -82,6 +90,34 @@ public class GameController extends Controller {
 				player.drawTile(tileStr);
 			}
 		}
+		
+		this.updateView();
+	}
+	
+	public void placedTile(String nickname, String indexStr, String tileStr) {
+		ClientDatabase database = (ClientDatabase)this.getDatabase();
+		Game game = database.getGame();
+		Player player = null;
+		Integer index;
+		
+		for(Player p: game.getPlayers()) {
+			if(nickname.equals(p.getNickname())) {
+				player = p;
+				break;
+			}
+		}
+		
+		if(player == null) {
+			return;
+		}
+		
+		try {
+			index = Integer.parseInt(indexStr);
+		} catch(NumberFormatException e) {
+			return;
+		}
+		
+		player.placeTile(index, tileStr);
 		
 		this.updateView();
 	}

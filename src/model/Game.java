@@ -74,13 +74,21 @@ public class Game implements Runnable {
 		status = this.board.placeTile(tile, index);
 		if(status == 0) {
 			player.getTiles().remove(tile);
+			this.turn = this.nextPlayer();
 		}
 		
 		return status;
 	}
 	
-	public void moveMade(Player player) {
-		this.expectingMove.remove(player);
+	public Player nextPlayer() {	
+		Integer index = this.players.indexOf(this.turn) + 1;
+		Player next = this.players.get(0);
+		
+		if(index < this.players.size()) {
+			next = this.players.get(index);
+		}
+		
+		return next;
 	}
 	
 	//***************************************************
@@ -96,10 +104,8 @@ public class Game implements Runnable {
 			player.setGame(this);
 			player.setScore(0);
 		}
-	}
-	
-	private boolean expectingMove(Player player) {
-		return this.expectingMove.contains(player);
+		
+		this.turn = players.get(0);
 	}
 	
 	//***************************************************
@@ -156,17 +162,16 @@ public class Game implements Runnable {
 		
 		while(this.status.equals(Status.RUNNING)) {
 			for(Player player: this.players) {
-				this.setTurn(player);
 				player.getPeer().write("requestMove");
-				this.expectingMove.add(player);
-				
-				while(this.expectingMove(player)) {
+				while(this.turn.equals(player)) {
 					try {
 						Thread.sleep(500);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					} 
 				}
+				Tile tile = player.drawTile();
+				Messenger.broadcast(this.players, "drawnTile " + player.getNickname() + " " + tile.toString());
 			}
 		}
 	}

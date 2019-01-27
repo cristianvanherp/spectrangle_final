@@ -55,7 +55,6 @@ public class GameController extends Controller {
 			break;
 		default:
 			Messenger.broadcast(player.getGame().getPlayers(), "placedTile " + player.getNickname() + " " + index + " " + tileStr);
-			player.getGame().moveMade(player);
 			break;
 		}
 	}
