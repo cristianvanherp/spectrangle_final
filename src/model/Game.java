@@ -18,7 +18,6 @@ public class Game implements Runnable {
 	//------------------RELATIONSHIPS--------------------
 	//***************************************************
 	private List<Player> players;
-	private Player host;
 	private Board board;
 	private Bag bag;
 	
@@ -28,7 +27,6 @@ public class Game implements Runnable {
 	private Thread thread;
 	private Status status;
 	private Player turn;
-	private List<Player> expectingMove;
 	
 	//***************************************************
 	//------------------CONSTRUCTORS---------------------
@@ -97,7 +95,6 @@ public class Game implements Runnable {
 	private void init() {
 		this.board = new Board();
 		this.bag = new Bag();
-		this.expectingMove = new ArrayList<Player>();
 		this.status = Status.NOT_STARTED;
 		
 		for(Player player: this.players) {

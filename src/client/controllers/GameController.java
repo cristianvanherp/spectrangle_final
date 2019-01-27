@@ -1,6 +1,5 @@
 package client.controllers;
 
-import java.io.IOException;
 import java.util.*;
 
 import abstract_classes.Controller;
@@ -8,13 +7,20 @@ import input.Message;
 import networking.Peer;
 import client.*;
 import model.*;
+import view.*;
 
 public class GameController extends Controller {
+	//***************************************************
+	//------------------ATTRIBUTES-----------------------
+	//***************************************************
+	private GameView view;
+	
 	//***************************************************
 	//------------------CONSTRUCTORS---------------------
 	//***************************************************
 	public GameController(ClientDatabase database) {
 		super(database);
+		this.view = new GameView();
 	}
 
 	//***************************************************
@@ -47,21 +53,6 @@ public class GameController extends Controller {
 		System.out.print("> ");
 	}
 	
-	private void updateView() {
-		this.clearScreen();
-		
-		ClientDatabase database = (ClientDatabase)this.getDatabase();
-		Board board = database.getGame().getBoard();
-		System.out.println(board.toString());
-		System.out.print("> ");
-	}
-	
-	private void clearScreen() {  
-	    for(int i = 0 ; i < 100 ; i++) {
-	    	System.out.print("\n");
-	    }
-	}  
-	
 	public void start(List<String> args) {
 		ClientDatabase database = (ClientDatabase)this.getDatabase();
 		
@@ -78,7 +69,8 @@ public class GameController extends Controller {
 		
 		Game game = new Game(players, null);
 		database.setGame(game);
-		this.updateView();
+		this.view.setGame(game);
+		this.view.draw();
 	}
 	
 	public void drawnTile(String nickname, String tileStr) {
@@ -91,7 +83,7 @@ public class GameController extends Controller {
 			}
 		}
 		
-		this.updateView();
+		this.view.draw();
 	}
 	
 	public void placedTile(String nickname, String indexStr, String tileStr) {
@@ -119,7 +111,7 @@ public class GameController extends Controller {
 		
 		player.placeTile(index, tileStr);
 		
-		this.updateView();
+		this.view.draw();
 	}
 	
 	public void requestMove() {
