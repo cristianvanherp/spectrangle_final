@@ -58,12 +58,5 @@ public class Messenger {
 			player.getPeer().write(msg);
 		}
 	}
-	
-//	public static void broadcast(List<Peer> peers, String msg) {
-//		for(Peer peer: peers) {
-//			peer.write(msg);
-//		}
-//	}
-//	
 
 }

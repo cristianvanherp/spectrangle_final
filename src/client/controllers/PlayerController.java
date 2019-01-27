@@ -25,9 +25,6 @@ public class PlayerController extends Controller {
 		case "nicknamed":
 			this.nicknamed(msg.getStringArgs());
 			break;
-		case "chooseColour":
-			this.chooseColour(peer);
-			break;
 		default:
 			break;
 		}
@@ -45,9 +42,4 @@ public class PlayerController extends Controller {
 		Player player = new Player(args);
 		((ClientDatabase)this.getDatabase()).setPlayer(player);
 	}
-	
-	public void chooseColour(Peer peer) {
-		this.serverMessage("Please choose a colour");
-	}
-
 }

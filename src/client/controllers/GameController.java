@@ -31,6 +31,8 @@ public class GameController extends Controller {
 		case "drawnTile":
 			this.drawnTile(msg.getArgs().get(0), msg.getArgs().get(1));
 			break;
+		case "requestMove":
+			this.requestMove();
 		default:
 			break;
 		}
@@ -39,6 +41,11 @@ public class GameController extends Controller {
 	//***************************************************
 	//------------------PRIVATE METHODS------------------
 	//***************************************************
+	public void serverMessage(String msg) {
+		System.out.println("Server: " + msg);
+		System.out.print("> ");
+	}
+	
 	public void start(List<String> args) {
 		ClientDatabase database = (ClientDatabase)this.getDatabase();
 		
@@ -65,15 +72,19 @@ public class GameController extends Controller {
 		}
 	}
 	
-	public void drawnTile(String nickname, String tile) {
+	public void drawnTile(String nickname, String tileStr) {
 		ClientDatabase database = (ClientDatabase)this.getDatabase();
 		List<Player> players = database.getGame().getPlayers();
 		
 		for(Player player: players) {
 			if(nickname.equals(player.getNickname())) {
-				player.drawTile(tile);
+				player.drawTile(tileStr);
 			}
 		}
+	}
+	
+	public void requestMove() {
+		this.serverMessage("It's your turn. Enter move.");
 	}
 
 }

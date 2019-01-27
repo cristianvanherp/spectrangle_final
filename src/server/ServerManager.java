@@ -25,7 +25,6 @@ public class ServerManager implements Runnable {
 		while(true) {
 			
 			this.createGames();
-			
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {

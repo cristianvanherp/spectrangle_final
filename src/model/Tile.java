@@ -32,10 +32,10 @@ public class Tile {
 	@Override
 	public String toString() {
 		if(this.orientation.equals(Orientation.UP)) {
-			return this.colorRight + this.colorVertical + this.colorLeft + this.points.toString();
+			return String.valueOf(this.colorRight) + String.valueOf(this.colorVertical) + String.valueOf(this.colorLeft) + this.points.toString();
 		}
 		else {
-			return this.colorVertical + this.colorRight + this.colorLeft + this.points.toString();		
+			return String.valueOf(this.colorVertical) + String.valueOf(this.colorRight) + String.valueOf(this.colorLeft) + this.points.toString();		
 		}	
 	}
 	

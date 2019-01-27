@@ -22,6 +22,26 @@ public class Board {
 	}
 	
 	//***************************************************
+	//------------------PUBLIC METHODS------------------
+	//***************************************************
+	public int placeTile(Tile tile, int index) {
+		Slot slot = null;
+		
+		try {
+			slot = this.slots.get(index);
+		} catch(IndexOutOfBoundsException e) {
+			return 404;
+		}
+		
+		//TODO: PERFORM CHECKS HERE
+		
+		//-------------------------
+		
+		slot.setTile(tile);
+		return 0;
+	}
+	
+	//***************************************************
 	//------------------PRIVATE METHODS------------------
 	//***************************************************
 	private void init() {

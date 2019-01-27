@@ -27,6 +27,8 @@ public class Game implements Runnable {
 	//***************************************************
 	private Thread thread;
 	private Status status;
+	private Player turn;
+	private List<Player> expectingMove;
 	
 	//***************************************************
 	//------------------CONSTRUCTORS---------------------
@@ -62,18 +64,42 @@ public class Game implements Runnable {
 		return str.trim();
 	}
 	
+	public int placeTile(Player player, int index, Tile tile) {
+		int status;
+		
+		if(!this.getTurn().equals(player)) {
+			return 403;
+		}
+		
+		status = this.board.placeTile(tile, index);
+		if(status == 0) {
+			player.getTiles().remove(tile);
+		}
+		
+		return status;
+	}
+	
+	public void moveMade(Player player) {
+		this.expectingMove.remove(player);
+	}
+	
 	//***************************************************
 	//------------------PRIVATE METHODS------------------
 	//***************************************************
 	private void init() {
 		this.board = new Board();
 		this.bag = new Bag();
+		this.expectingMove = new ArrayList<Player>();
 		this.status = Status.NOT_STARTED;
 		
 		for(Player player: this.players) {
 			player.setGame(this);
 			player.setScore(0);
 		}
+	}
+	
+	private boolean expectingMove(Player player) {
+		return this.expectingMove.contains(player);
 	}
 	
 	//***************************************************
@@ -95,6 +121,22 @@ public class Game implements Runnable {
 		this.players = players;
 	}
 
+	public Board getBoard() {
+		return board;
+	}
+
+	public void setBoard(Board board) {
+		this.board = board;
+	}
+
+	public Player getTurn() {
+		return turn;
+	}
+
+	public void setTurn(Player turn) {
+		this.turn = turn;
+	}
+
 	//***************************************************
 	//------------------THREAD---------------------------
 	//***************************************************
@@ -109,6 +151,22 @@ public class Game implements Runnable {
 			List<Tile> tiles = player.drawMaxTiles();
 			for(Tile tile: tiles) {
 				Messenger.broadcast(this.players, "drawnTile " + player.getNickname() + " " + tile.toString());
+			}
+		}
+		
+		while(this.status.equals(Status.RUNNING)) {
+			for(Player player: this.players) {
+				this.setTurn(player);
+				player.getPeer().write("requestMove");
+				this.expectingMove.add(player);
+				
+				while(this.expectingMove(player)) {
+					try {
+						Thread.sleep(500);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					} 
+				}
 			}
 		}
 	}

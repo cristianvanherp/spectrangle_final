@@ -3,6 +3,7 @@ package model;
 import java.util.*;
 
 import networking.*;
+import server.ServerDatabase;
 
 public class Player {
 	//***************************************************
@@ -70,6 +71,22 @@ public class Player {
 	
 	public Tile lastTile() {
 		return this.tiles.get(this.tiles.size()-1);
+	}
+	
+	public int placeTile(int index, String tileStr) {
+		Tile tile = null;
+		
+		for(Tile t: this.tiles) {
+			if(tileStr.equals(t.toString())) {
+				tile = t;
+			}
+		}
+		
+		if(tile == null) {
+			return 404;
+		}
+		
+		return this.game.placeTile(this, index, tile);
 	}
 	
 	//***************************************************
