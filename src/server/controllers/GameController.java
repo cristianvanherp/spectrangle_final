@@ -32,7 +32,7 @@ public class GameController extends Controller {
 	//***************************************************
 	//---------------------PRIVATE METHODS---------------
 	//***************************************************
-	private void placeTile(Peer peer, String indexStr, String tileStr) {
+	public void placeTile(Peer peer, String indexStr, String tileStr) {
 		Integer index;
 
 		try {

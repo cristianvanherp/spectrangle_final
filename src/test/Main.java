@@ -8,9 +8,6 @@ public class Main {
 	}
 	
 	public static void main(String[] args) {
-		Main m = new Main();
-		for(Method method: m.getClass().getMethods()) {
-			System.out.println(method.getName());
-		}
+		
 	}
 }

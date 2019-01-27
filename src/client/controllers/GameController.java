@@ -1,5 +1,6 @@
 package client.controllers;
 
+import java.io.IOException;
 import java.util.*;
 
 import abstract_classes.Controller;
@@ -25,9 +26,6 @@ public class GameController extends Controller {
 		case "start":
 			this.start(msg.getArgs());
 			break;
-		case "colour":
-			this.colour(msg.getArgs().get(0), msg.getArgs().get(1));
-			break;
 		case "drawnTile":
 			this.drawnTile(msg.getArgs().get(0), msg.getArgs().get(1));
 			break;
@@ -46,6 +44,19 @@ public class GameController extends Controller {
 		System.out.print("> ");
 	}
 	
+	public void updateView() {
+		try {
+			Runtime.getRuntime().exec("cls");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		ClientDatabase database = (ClientDatabase)this.getDatabase();
+		Board board = database.getGame().getBoard();
+		System.out.println(board.toString());
+		System.out.print("> ");
+	}
+	
 	public void start(List<String> args) {
 		ClientDatabase database = (ClientDatabase)this.getDatabase();
 		
@@ -59,17 +70,7 @@ public class GameController extends Controller {
 		
 		Game game = new Game(players, null);
 		database.setGame(game);
-	}
-	
-	public void colour(String nickname, String colour) {
-		ClientDatabase database = (ClientDatabase)this.getDatabase();
-		List<Player> players = database.getGame().getPlayers();
-		
-		for(Player player: players) {
-			if(nickname.equals(player.getNickname())) {
-				player.getScoreBoard().setColor(colour);
-			}
-		}
+		this.updateView();
 	}
 	
 	public void drawnTile(String nickname, String tileStr) {
@@ -81,6 +82,8 @@ public class GameController extends Controller {
 				player.drawTile(tileStr);
 			}
 		}
+		
+		this.updateView();
 	}
 	
 	public void requestMove() {

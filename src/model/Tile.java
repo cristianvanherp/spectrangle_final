@@ -42,11 +42,37 @@ public class Tile {
 	//***************************************************
 	//------------------GETTERS/SETTERS------------------
 	//***************************************************
-	public int getPoints() {
+	public Integer getPoints() {
 		return points;
 	}
 
-	public void setPoints(int points) {
+	public void setPoints(Integer points) {
 		this.points = points;
 	}
+
+	public char getColorVertical() {
+		return colorVertical;
+	}
+
+	public void setColorVertical(char colorVertical) {
+		this.colorVertical = colorVertical;
+	}
+
+	public char getColorLeft() {
+		return colorLeft;
+	}
+
+	public void setColorLeft(char colorLeft) {
+		this.colorLeft = colorLeft;
+	}
+
+	public char getColorRight() {
+		return colorRight;
+	}
+
+	public void setColorRight(char colorRight) {
+		this.colorRight = colorRight;
+	}
+	
+	
 }

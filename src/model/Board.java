@@ -1,6 +1,7 @@
 package model;
 
 import java.util.*;
+import third_party.*;
 
 public class Board {
 	//***************************************************
@@ -41,6 +42,35 @@ public class Board {
 		return 0;
 	}
 	
+	public String toString() {
+		List<Integer> values = new ArrayList<Integer>();
+		List<Character> vertical = new ArrayList<Character>();
+		List<Character> left = new ArrayList<Character>();
+		List<Character> right = new ArrayList<Character>();
+		
+		Integer value;
+		Character chr_vertical, chr_left, chr_right;
+		for(Slot slot: this.slots) {
+			value = null;
+			chr_vertical = chr_left = chr_right = null;
+			
+			if(slot.getTile() != null) {
+				value = slot.getTile().getPoints();
+				chr_vertical = slot.getTile().getColorVertical();
+				chr_left = slot.getTile().getColorLeft();
+				chr_right = slot.getTile().getColorRight();
+			}
+			
+			values.add(value);
+			vertical.add(chr_vertical);
+			left.add(chr_left);
+			right.add(chr_right);
+		}
+		
+		
+		return SpectrangleBoardPrinter.getBoardString(values, vertical, left, right);
+	}
+	
 	//***************************************************
 	//------------------PRIVATE METHODS------------------
 	//***************************************************
@@ -66,7 +96,7 @@ public class Board {
 		return (row*row) + row + col;
 	}
 	
-	public int rowOfIndex(int x) {
+	public int indexRow(int x) {
 		
 		for(int i=0;i<=5;i++) {
 			if ( x>=i*i && x<(i+1)*(i+1) )
@@ -75,8 +105,8 @@ public class Board {
 	    return -1;
 	}
 	
-	public int columnOfIndex(int x) {
-		int r=rowOfIndex(x);
+	public int indexColumn(int x) {
+		int r=indexRow(x);
 	    if(x<r*(r+1)) {
 			int i=0;
 			while (i>=(-r)) {
@@ -84,13 +114,13 @@ public class Board {
 				if(coordToIndex(r,i)==x)
 					return i;
 			}
-			}
-			else {
-				int i=0;
-				while (i<=r) {
-					i++;
-					if(coordToIndex(r,i)==x)
-						return i;
+		}
+		else {
+			int i=0;
+			while (i<=r) {
+				i++;
+				if(coordToIndex(r,i)==x)
+					return i;
 				}
 			}
 		return -15;
