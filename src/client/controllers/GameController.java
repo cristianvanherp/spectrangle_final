@@ -46,10 +46,13 @@ public class GameController extends Controller {
 			break;
 		case "requestMove":
 			this.requestMove();
+			break;
 		case "players":
 			this.players(msg.getArgs());
+			break;
 		case "end":
 			this.end();
+			break;
 		default:
 			break;
 		}
