@@ -72,6 +72,7 @@ public class Board {
 		return points;
 	}
 	
+	
 	public int canBePlaced(Slot slot, Tile tile) {
 		int edges = 0;
 		
