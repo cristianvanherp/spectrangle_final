@@ -31,14 +31,14 @@ public class PlayerController extends Controller {
 	}
 	
 	//***************************************************
-	//------------------PRIVATE METHODS------------------
+	//------------------SERVER COMMANDS------------------
 	//***************************************************
 	private void serverMessage(String msg) {
 		System.out.println("Server: " + msg);
 		System.out.print("> ");
 	}
 	
-	private void features(List<String> args) {
+	public void features(List<String> args) {
 		ClientDatabase database = (ClientDatabase)this.getDatabase();
 		database.getPeer().write("features");
 	}

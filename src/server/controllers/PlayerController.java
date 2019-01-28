@@ -36,7 +36,7 @@ public class PlayerController extends Controller {
 	//***************************************************
 	//---------------------CLIENT COMMANDS---------------
 	//***************************************************
-	private void nickname(Peer peer, String nickname) {
+	public void nickname(Peer peer, String nickname) {
 		Player player = ((ServerDatabase)this.getDatabase()).getPlayer(peer);
 		ServerDatabase database = (ServerDatabase)this.getDatabase();
 		
@@ -60,7 +60,7 @@ public class PlayerController extends Controller {
 		peer.write("200 " + "Waiting for more players...");
 	}
 	
-	private void features(Peer peer, List<String> args) {
+	public void features(Peer peer, List<String> args) {
 	
 	}
 

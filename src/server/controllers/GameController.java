@@ -104,7 +104,7 @@ public class GameController extends Controller {
 		}
 	}
 	
-	private void leave(Peer peer) {
+	public void leave(Peer peer) {
 		ServerDatabase database = (ServerDatabase)this.getDatabase();
 		Player player = database.getPlayer(peer);
 		Game game = player.getGame();
