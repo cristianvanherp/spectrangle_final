@@ -13,6 +13,7 @@ public class SpectrangleBoardPrinter {
     public static void main(String[] args) {
         // This is an example of how to use the function below.
         System.out.println(getBoardString(values, vertical, left, right));
+        SpectrangleBoardPrinter.printTile();	
     }
 
     /**
@@ -112,5 +113,17 @@ public class SpectrangleBoardPrinter {
         Map<Integer, K> indexed_values = new HashMap<>();
         for(int i = 0; i < values.size(); i++){ indexed_values.put(i, inputList.get(i)); }
         return indexed_values;
+    }
+    
+    public static void printTile() {
+    	String template = "\n" +
+    	"        ^\n" +
+    	"       / \\\n" +
+    	"      /   \\\n" +
+    	"     /A 1 B\\\n" +
+    	"    /   C   \\\n" +
+    	"   -----------";	
+    	
+    	System.out.print(template);
     }
 }

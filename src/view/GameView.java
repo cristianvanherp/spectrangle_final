@@ -26,13 +26,9 @@ public class GameView {
 		System.out.println("\n");
 		
 		for(Player player: this.game.getPlayers()) {
-			System.out.print(player.getNickname() + " -> Points: " + player.getScore() + ", Tiles: ");
-			for(Tile tile: player.getTiles()) {
-				System.out.print(tile.toString() + " ");
-			}
-			System.out.println("\n");
+			System.out.println(player.getNickname());
+			Tile.draw(player.getTiles());
 		}
-		
 		
 		System.out.print("> ");
 	}

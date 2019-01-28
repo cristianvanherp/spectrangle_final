@@ -79,8 +79,9 @@ public class Player {
 		Tile tile = null;
 		
 		for(Tile t: this.tiles) {
-			if(tileStr.equals(t.toString())) {
+			if(t.isEquivalent(tileStr)) {
 				tile = t;
+				break;
 			}
 		}
 		

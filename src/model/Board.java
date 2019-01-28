@@ -42,49 +42,65 @@ public class Board {
 		}
 		
 		if(!this.isEmpty()) {
-			Slot left;
-			if((left = slot.getLeft()) != null) {
-				if(left.getTile() != null) {
-					if(left.getTile().getColorRight() == tile.getColorLeft()) {
-						edges++;
-					}
+			for(int i = 0 ; i < 6 ; i++) {
+				if((edges = this.canBePlaced(slot, tile)) != 0) {
+					break;
 				}
+				tile.rotate();
 			}
 			
-			Slot right;
-			if((right = slot.getRight()) != null) {
-				if(right.getTile() != null) {
-					if(right.getTile().getColorLeft() == tile.getColorRight()) {
-						edges++;
-					}
-				}
-			}
-			
-			Slot vertical;
-			if((vertical = slot.getVertical()) != null) {
-				if(vertical.getTile() != null) {
-					if(vertical.getTile().getColorVertical() == tile.getColorVertical()) {
-						edges++;
-					}
-				}
+			if(edges == 0) {
+				return 0;
 			}
 		}
 		else {
-			edges = 1;
-			
 			if(slot.getBonus() > 1) {
 				return -1;
 			}
-		}
-		
-		if(edges == 0) {
-			return 0;
+			
+			edges = 1;
+			if(!tile.getOrientation().equals(slot.getOrientation())) {
+				tile.rotate();
+			}
 		}
 		
 		points = tile.getPoints() * edges * slot.getBonus();
-
+		
 		slot.setTile(tile);
 		return points;
+	}
+	
+	public int canBePlaced(Slot slot, Tile tile) {
+		int edges = 0;
+		
+		Slot left;
+		if((left = slot.getLeft()) != null) {
+			if(left.getTile() != null) {
+				if(left.getTile().getColorRight() == tile.getColorLeft() || tile.getColorLeft() == 'W' || left.getTile().getColorRight() == 'W') {
+					edges++;
+				}
+			}
+		}
+		
+		Slot right;
+		if((right = slot.getRight()) != null) {
+			if(right.getTile() != null) {
+				if(right.getTile().getColorLeft() == tile.getColorRight() || tile.getColorRight() == 'W' || left.getTile().getColorLeft() == 'W') {
+					edges++;
+				}
+			}
+		}
+		
+		Slot vertical;
+		if((vertical = slot.getVertical()) != null) {
+			if(vertical.getTile() != null) {
+				if(vertical.getTile().getColorVertical() == tile.getColorVertical()  || tile.getColorVertical() == 'W' || left.getTile().getColorVertical() == 'W') {
+					edges++;
+				}
+			}
+		}
+		
+		return edges;
 	}
 
 	public String toString() {
