@@ -38,6 +38,9 @@ public class GameController extends Controller {
 		case "placedTile":
 			this.placedTile(msg.getArgs().get(0), msg.getArgs().get(1), msg.getArgs().get(2));
 			break;
+		case "switchedTile":
+			this.placedTile(msg.getArgs().get(0), msg.getArgs().get(1), msg.getArgs().get(2));
+			break;
 		case "requestMove":
 			this.requestMove();
 		default:
@@ -110,6 +113,14 @@ public class GameController extends Controller {
 		}
 		
 		player.placeTile(index, tileStr);
+		
+		this.view.draw();
+	}
+	
+	public void switchedTile(String nickname, String oldTileStr, String newTileStr) {
+		ClientDatabase database = (ClientDatabase)this.getDatabase();
+		Player player = database.getPlayer();
+		player.switchTile(oldTileStr, newTileStr);
 		
 		this.view.draw();
 	}

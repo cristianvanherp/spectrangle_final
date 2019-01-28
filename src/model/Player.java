@@ -92,6 +92,40 @@ public class Player {
 		return this.game.placeTile(this, index, tile);
 	}
 	
+	public int switchTile(String tileStr) {
+		Tile tile = null;
+	
+		for(Tile t: this.tiles) {
+			if(t.isEquivalent(tileStr)) {
+				tile = t;
+				break;
+			}
+		}
+		
+		if(tile == null) {
+			return 404;
+		}
+		
+		return this.game.switchTile(this, tile);
+	}
+	
+	public int switchTile(String oldTileStr, String newTileStr) {
+		Tile tile = null;
+	
+		for(Tile t: this.tiles) {
+			if(t.isEquivalent(oldTileStr)) {
+				tile = t;
+				break;
+			}
+		}
+		
+		if(tile == null) {
+			return 404;
+		}
+		
+		return this.game.switchTile(this, tile, newTileStr);
+	}
+	
 	public void addPoints(int points) {
 		this.score += points;
 	}

@@ -24,6 +24,8 @@ public class GameController extends Controller {
 		switch(msg.getCommand()) {
 		case "placeTile":
 			this.placeTile(peer, msg.getArgs().get(0), msg.getArgs().get(1));
+		case "switchTile":
+			this.switchTile(peer, msg.getArgs().get(0));
 		default:
 			break;
 		}
@@ -55,6 +57,25 @@ public class GameController extends Controller {
 			break;
 		default:
 			Messenger.broadcast(player.getGame().getPlayers(), "placedTile " + player.getNickname() + " " + index + " " + tileStr);
+			break;
+		}
+	}
+	
+	public void switchTile(Peer peer, String tileStr) {
+		ServerDatabase database = (ServerDatabase)this.getDatabase();
+		Player player = database.getPlayer(peer);
+		
+		int status = player.switchTile(tileStr);
+	
+		switch(status) {
+		case 403:
+			peer.write("403 It's not your turn.");
+			break;
+		case 404:
+			peer.write("404 You don't have that tile or it can be played. Try again.");
+			break;
+		default:
+			Messenger.broadcast(player.getGame().getPlayers(), "switchedTile " + player.getNickname() + " " + tileStr + " " + player.lastTile().toString());
 			break;
 		}
 	}

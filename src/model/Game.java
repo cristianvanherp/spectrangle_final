@@ -11,7 +11,7 @@ public class Game implements Runnable {
 	//***************************************************
 	//------------------CONSTANTS------------------------
 	//***************************************************
-	public static final int MIN_PLAYERS = 1;
+	public static final int MIN_PLAYERS = 2;
 	public static final int MAX_PLAYERS = 4;
 	
 	//***************************************************
@@ -78,6 +78,38 @@ public class Game implements Runnable {
 		player.addPoints(points);
 		this.turn = this.nextPlayer();
 		
+		return 0;
+	}
+	
+	public int switchTile(Player player, Tile tile) {
+		
+		if(!this.getTurn().equals(player)) {
+			return 403;
+		}
+		
+		if(this.board.canBePlaced(tile)) {
+			return 403;
+		}
+		
+		player.getTiles().remove(tile);
+		this.bag.getTiles().add(tile);
+		player.drawTile();
+		return 0;
+	}
+	
+	public int switchTile(Player player, Tile tile, String newTileStr) {
+		
+		if(!this.getTurn().equals(player)) {
+			return 403;
+		}
+		
+		if(this.board.canBePlaced(tile)) {
+			return 403;
+		}
+		
+		player.getTiles().remove(tile);
+		this.bag.getTiles().add(tile);
+		player.drawTile(newTileStr);
 		return 0;
 	}
 	

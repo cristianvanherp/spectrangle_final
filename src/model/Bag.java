@@ -44,6 +44,7 @@ public class Bag {
 		return null;
 	}
 	
+	
 	//***************************************************
 	//------------------PRIVATE METHODS-------------------
 	//***************************************************
@@ -96,4 +97,16 @@ public class Bag {
 		this.tiles.add(new Tile(Orientation.UP, 'R', 'Y', 'B', 1));
 		this.tiles.add(new Tile(Orientation.UP, 'W', 'W', 'W', 1));
 	}
+	
+	//***************************************************
+	//------------------GETTERS/SETTERS------------------
+	//***************************************************
+	public List<Tile> getTiles() {
+		return tiles;
+	}
+
+	public void setTiles(List<Tile> tiles) {
+		this.tiles = tiles;
+	}
+	
 }

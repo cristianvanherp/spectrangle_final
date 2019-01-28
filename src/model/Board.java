@@ -107,6 +107,16 @@ public class Board {
 		
 		return edges;
 	}
+	
+	public boolean canBePlaced(Tile tile) {
+		for(Slot slot: this.slots) {
+			if(this.canBePlaced(slot, tile) != 0) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
 
 	public String toString() {
 		List<Integer> values = new ArrayList<Integer>();
