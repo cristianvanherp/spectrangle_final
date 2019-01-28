@@ -26,7 +26,7 @@ public class GameView {
 		System.out.println("\n");
 		
 		for(Player player: this.game.getPlayers()) {
-			System.out.println(player.getNickname());
+			System.out.println(player.getNickname() + " - Score: " + player.getScore());
 			Tile.draw(player.getTiles());
 		}
 		

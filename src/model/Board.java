@@ -85,7 +85,7 @@ public class Board {
 		Slot right;
 		if((right = slot.getRight()) != null) {
 			if(right.getTile() != null) {
-				if(right.getTile().getColorLeft() == tile.getColorRight() || tile.getColorRight() == 'W' || left.getTile().getColorLeft() == 'W') {
+				if(right.getTile().getColorLeft() == tile.getColorRight() || tile.getColorRight() == 'W' || right.getTile().getColorLeft() == 'W') {
 					edges++;
 				}
 			}
@@ -94,7 +94,7 @@ public class Board {
 		Slot vertical;
 		if((vertical = slot.getVertical()) != null) {
 			if(vertical.getTile() != null) {
-				if(vertical.getTile().getColorVertical() == tile.getColorVertical()  || tile.getColorVertical() == 'W' || left.getTile().getColorVertical() == 'W') {
+				if(vertical.getTile().getColorVertical() == tile.getColorVertical()  || tile.getColorVertical() == 'W' || vertical.getTile().getColorVertical() == 'W') {
 					edges++;
 				}
 			}
