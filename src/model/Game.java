@@ -63,19 +63,21 @@ public class Game implements Runnable {
 	}
 	
 	public int placeTile(Player player, int index, Tile tile) {
-		int status;
+		Integer points;
 		
 		if(!this.getTurn().equals(player)) {
 			return 403;
 		}
 		
-		status = this.board.placeTile(tile, index);
-		if(status == 0) {
-			player.getTiles().remove(tile);
-			this.turn = this.nextPlayer();
+		points = this.board.placeTile(tile, index);
+		if(points == -1) {
+			return 404;
 		}
 		
-		return status;
+		player.getTiles().remove(tile);
+		this.turn = this.nextPlayer();
+		
+		return 0;
 	}
 	
 	public Player nextPlayer() {	

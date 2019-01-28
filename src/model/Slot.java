@@ -13,7 +13,8 @@ public class Slot {
 	//------------------ATTRIBUTES---------------------
 	//***************************************************
 	private int bonus;
-	private Orientation orientation; //TODO: change to an enum type
+	private Orientation orientation;
+	private int index;
 
 	//***************************************************
 	//------------------CONSTRUCTORS---------------------
@@ -63,6 +64,22 @@ public class Slot {
 
 	public void setVertical(Slot vertical) {
 		this.vertical = vertical;
+	}
+
+	public int getIndex() {
+		return index;
+	}
+
+	public void setIndex(int index) {
+		this.index = index;
+	}
+
+	public Orientation getOrientation() {
+		return orientation;
+	}
+
+	public void setOrientation(Orientation orientation) {
+		this.orientation = orientation;
 	}
 	
 }
