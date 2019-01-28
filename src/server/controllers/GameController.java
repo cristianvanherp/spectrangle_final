@@ -24,8 +24,16 @@ public class GameController extends Controller {
 		switch(msg.getCommand()) {
 		case "placeTile":
 			this.placeTile(peer, msg.getArgs().get(0), msg.getArgs().get(1));
+			break;
 		case "switchTile":
 			this.switchTile(peer, msg.getArgs().get(0));
+			break;
+		case "skipMove":
+			this.skipMove(peer);
+			break;
+		case "leave":
+			this.leave(peer);
+			break;
 		default:
 			break;
 		}
@@ -69,7 +77,7 @@ public class GameController extends Controller {
 	
 		switch(status) {
 		case 403:
-			peer.write("403 It's not your turn.");
+			peer.write("403 It's either not your turn or you can place a tile.");
 			break;
 		case 404:
 			peer.write("404 You don't have that tile or it can be played. Try again.");
@@ -78,6 +86,36 @@ public class GameController extends Controller {
 			Messenger.broadcast(player.getGame().getPlayers(), "switchedTile " + player.getNickname() + " " + tileStr + " " + player.lastTile().toString());
 			break;
 		}
+	}
+	
+	public void skipMove(Peer peer) {
+		ServerDatabase database = (ServerDatabase)this.getDatabase();
+		Player player = database.getPlayer(peer);
+	
+		int status = player.skipMove();
+		
+		switch(status) {
+		case 403:
+			peer.write("403 It's either not your turn or you can place a tile.");
+			break;
+		default:
+			Messenger.broadcast(player.getGame().getPlayers(), "skippedMove " + player.getNickname());
+			break;
+		}
+	}
+	
+	private void leave(Peer peer) {
+		ServerDatabase database = (ServerDatabase)this.getDatabase();
+		Player player = database.getPlayer(peer);
+		Game game = player.getGame();
+		
+		if(game == null) {
+			peer.write("403 You're not currently in a game.");
+		}
+		
+		player.leaveGame();
+		Messenger.broadcast(game.getPlayers(), "players " + game.getPlayersStr());
+		
 	}
 
 }

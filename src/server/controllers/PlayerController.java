@@ -25,8 +25,8 @@ public class PlayerController extends Controller {
 		case "nickname":
 			this.nickname(peer, msg.getStringArgs());
 			break;
-		case "colour":
-			this.colour(peer, msg.getStringArgs());
+		case "features":
+			this.features(peer, msg.getArgs());
 			break;
 		default:
 			break;
@@ -36,7 +36,7 @@ public class PlayerController extends Controller {
 	//***************************************************
 	//---------------------CLIENT COMMANDS---------------
 	//***************************************************
-	public void nickname(Peer peer, String nickname) {
+	private void nickname(Peer peer, String nickname) {
 		Player player = ((ServerDatabase)this.getDatabase()).getPlayer(peer);
 		ServerDatabase database = (ServerDatabase)this.getDatabase();
 		
@@ -57,22 +57,11 @@ public class PlayerController extends Controller {
 		}
 		
 		player.setNickname(nickname);
-		peer.write("nicknamed " + nickname);
+		peer.write("200 " + "Waiting for more players...");
 	}
 	
-	public void colour(Peer peer, String colour) {
-		ServerDatabase database = (ServerDatabase)this.getDatabase();
-		Player player = database.getPlayer(peer);
-		List<Player> players = player.getGame().getPlayers();
-		
-		for(Player p: players) {
-			if(colour.equals(p.getScoreBoard().getColor())) {
-				peer.write("403 This colour has already been chosen. Pick another one");
-				return;
-			}
-		}
-		
-		player.getScoreBoard().setColor(colour);
+	private void features(Peer peer, List<String> args) {
+	
 	}
 
 }

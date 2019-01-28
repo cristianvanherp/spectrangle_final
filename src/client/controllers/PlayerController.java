@@ -22,8 +22,8 @@ public class PlayerController extends Controller {
 	@Override
 	public void forward(Peer peer, Message msg) {
 		switch(msg.getCommand()) {
-		case "nicknamed":
-			this.nicknamed(msg.getStringArgs());
+		case "features":
+			this.features(msg.getArgs());
 			break;
 		default:
 			break;
@@ -33,13 +33,14 @@ public class PlayerController extends Controller {
 	//***************************************************
 	//------------------PRIVATE METHODS------------------
 	//***************************************************
-	public void serverMessage(String msg) {
+	private void serverMessage(String msg) {
 		System.out.println("Server: " + msg);
 		System.out.print("> ");
 	}
 	
-	public void nicknamed(String args) {
-		Player player = new Player(args);
-		((ClientDatabase)this.getDatabase()).setPlayer(player);
+	private void features(List<String> args) {
+		ClientDatabase database = (ClientDatabase)this.getDatabase();
+		database.getPeer().write("features");
 	}
+	
 }

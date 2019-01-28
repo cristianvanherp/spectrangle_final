@@ -130,6 +130,14 @@ public class Player {
 		this.score += points;
 	}
 	
+	public int skipMove() {
+		return this.game.skipMove(this);
+	}
+	
+	public void leaveGame() {
+		this.game.leaveGame(this);
+	}
+	
 	//***************************************************
 	//------------------GETTERS/SETTERS---------------------
 	//***************************************************

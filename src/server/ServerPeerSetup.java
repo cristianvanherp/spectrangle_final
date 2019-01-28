@@ -33,6 +33,8 @@ public class ServerPeerSetup implements Setup {
 			System.out.println(e.getMessage());
 			return;
 		}
+		
+		peer.write("features");
 	}
 	
 	//***************************************************

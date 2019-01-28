@@ -39,10 +39,17 @@ public class GameController extends Controller {
 			this.placedTile(msg.getArgs().get(0), msg.getArgs().get(1), msg.getArgs().get(2));
 			break;
 		case "switchedTile":
-			this.placedTile(msg.getArgs().get(0), msg.getArgs().get(1), msg.getArgs().get(2));
+			this.switchedTile(msg.getArgs().get(0), msg.getArgs().get(1), msg.getArgs().get(2));
+			break;
+		case "skippedMove":
+			this.skippedMove(msg.getArgs().get(0));
 			break;
 		case "requestMove":
 			this.requestMove();
+		case "players":
+			this.players(msg.getArgs());
+		case "end":
+			this.end();
 		default:
 			break;
 		}
@@ -62,12 +69,7 @@ public class GameController extends Controller {
 		List<Player> players = new ArrayList<Player>();
 		
 		for(String nickname: args) {
-			if(nickname.equals(database.getPlayer().getNickname())) {
-				players.add(database.getPlayer());
-			}
-			else {
-				players.add(new Player(nickname));
-			}
+			players.add(new Player(nickname));
 		}
 		
 		Game game = new Game(players, null);
@@ -119,14 +121,61 @@ public class GameController extends Controller {
 	
 	public void switchedTile(String nickname, String oldTileStr, String newTileStr) {
 		ClientDatabase database = (ClientDatabase)this.getDatabase();
-		Player player = database.getPlayer();
-		player.switchTile(oldTileStr, newTileStr);
+		Game game = database.getGame();
+		Player player = null;
 		
+		for(Player p: game.getPlayers()) {
+			if(nickname.equals(p.getNickname())) {
+				player = p;
+				break;
+			}
+		}
+		
+		if(player == null) {
+			return;
+		}
+		
+		player.switchTile(oldTileStr, newTileStr);
 		this.view.draw();
 	}
 	
 	public void requestMove() {
 		this.serverMessage("It's your turn. Enter move.");
+	}
+	
+	public void skippedMove(String nickname) {
+		ClientDatabase database = (ClientDatabase)this.getDatabase();
+		Game game = database.getGame();
+		Player player = null;
+		
+		for(Player p: game.getPlayers()) {
+			if(nickname.equals(p.getNickname())) {
+				player = p;
+				break;
+			}
+		}
+		
+		if(player == null) {
+			return;
+		}
+		
+		player.skipMove();
+		this.view.draw();
+	}
+	
+	public void end() {
+		this.serverMessage("Game over!");
+	}
+	
+	public void players(List<String> args) {
+		ClientDatabase database = (ClientDatabase)this.getDatabase();
+		Game game = database.getGame();
+		
+		for(Player player: game.getPlayers()) {
+			if(!args.contains(player.getNickname())) {
+				player.leaveGame();
+			}
+		}
 	}
 
 }

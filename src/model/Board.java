@@ -109,6 +109,10 @@ public class Board {
 	}
 	
 	public boolean canBePlaced(Tile tile) {
+		if(this.isEmpty()) {
+			return true;
+		}
+		
 		for(Slot slot: this.slots) {
 			if(this.canBePlaced(slot, tile) != 0) {
 				return true;

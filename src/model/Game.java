@@ -87,13 +87,14 @@ public class Game implements Runnable {
 			return 403;
 		}
 		
-		if(this.board.canBePlaced(tile)) {
+		if(this.canMakeMove(player)) {
 			return 403;
 		}
 		
 		player.getTiles().remove(tile);
 		this.bag.getTiles().add(tile);
 		player.drawTile();
+		this.turn = this.nextPlayer();
 		return 0;
 	}
 	
@@ -103,14 +104,33 @@ public class Game implements Runnable {
 			return 403;
 		}
 		
-		if(this.board.canBePlaced(tile)) {
+		if(this.canMakeMove(player)) {
 			return 403;
 		}
 		
 		player.getTiles().remove(tile);
 		this.bag.getTiles().add(tile);
 		player.drawTile(newTileStr);
+		this.turn = this.nextPlayer();
 		return 0;
+	}
+	
+	public int skipMove(Player player) {
+		if(this.canMakeMove(player)) {
+			return 403;
+		}
+		
+		this.turn = this.nextPlayer();
+		return 0;
+	}
+	
+	public boolean canMakeMove(Player player) {
+		for(Tile tile: player.getTiles()) {
+			if(this.board.canBePlaced(tile)) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public Player nextPlayer() {	
@@ -122,6 +142,13 @@ public class Game implements Runnable {
 		}
 		
 		return next;
+	}
+	
+	public void leaveGame(Player player) {
+		this.bag.getTiles().addAll(player.getTiles());
+		player.setTiles(new ArrayList<Tile>());
+		player.setScore(0);
+		this.players.remove(player);
 	}
 	
 	//***************************************************
@@ -202,6 +229,13 @@ public class Game implements Runnable {
 						e.printStackTrace();
 					} 
 				}
+				
+				if(this.getBag().getTiles().isEmpty()) {
+					this.status = Status.FINISHED;
+					Messenger.broadcast(this.players, "end");
+					break;
+				}
+				
 				Tile tile = player.drawTile();
 				Messenger.broadcast(this.players, "drawnTile " + player.getNickname() + " " + tile.toString());
 			}
