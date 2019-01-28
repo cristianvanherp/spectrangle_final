@@ -75,6 +75,7 @@ public class Game implements Runnable {
 		}
 		
 		player.getTiles().remove(tile);
+		player.addPoints(points);
 		this.turn = this.nextPlayer();
 		
 		return 0;

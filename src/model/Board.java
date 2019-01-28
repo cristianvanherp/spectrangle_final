@@ -28,19 +28,63 @@ public class Board {
 	//***************************************************
 	public int placeTile(Tile tile, int index) {
 		Slot slot = null;
-
+		Integer points = 0;
+		Integer edges = 0;
+		
 		try {
 			slot = this.slots.get(index);
 		} catch(IndexOutOfBoundsException e) {
-			return 404;
+			return -1;
 		}
-
-		//TODO: PERFORM CHECKS HERE
-
-		//-------------------------
+		
+		if(slot.getTile() != null) {
+			return -1;
+		}
+		
+		if(!this.isEmpty()) {
+			Slot left;
+			if((left = slot.getLeft()) != null) {
+				if(left.getTile() != null) {
+					if(left.getTile().getColorRight() == tile.getColorLeft()) {
+						edges++;
+					}
+				}
+			}
+			
+			Slot right;
+			if((right = slot.getRight()) != null) {
+				if(right.getTile() != null) {
+					if(right.getTile().getColorLeft() == tile.getColorRight()) {
+						edges++;
+					}
+				}
+			}
+			
+			Slot vertical;
+			if((vertical = slot.getVertical()) != null) {
+				if(vertical.getTile() != null) {
+					if(vertical.getTile().getColorVertical() == tile.getColorVertical()) {
+						edges++;
+					}
+				}
+			}
+		}
+		else {
+			edges = 1;
+			
+			if(slot.getBonus() > 1) {
+				return -1;
+			}
+		}
+		
+		if(edges == 0) {
+			return 0;
+		}
+		
+		points = tile.getPoints() * edges * slot.getBonus();
 
 		slot.setTile(tile);
-		return 0;
+		return points;
 	}
 
 	public String toString() {
@@ -135,11 +179,11 @@ public class Board {
 		}
 	}
 
-	public int coordToIndex(int row, int col) {
+	private int coordToIndex(int row, int col) {
 		return (row*row) + row + col;
 	}
 
-	public int rowOfIndex(int x) {
+	private int rowOfIndex(int x) {
 
 		for(int i=0;i<=5;i++) {
 			if ( x>=i*i && x<(i+1)*(i+1) )
@@ -148,7 +192,7 @@ public class Board {
 		return -1;
 	}
 
-	public int columnOfIndex(int x) {
+	private int columnOfIndex(int x) {
 		int r=rowOfIndex(x);
 		if(x<r*(r+1)) {
 			int i=0;
@@ -169,13 +213,22 @@ public class Board {
 		return -15;
 	}
 
-	public Slot getSlotOfCoord(int r, int c) {
+	private Slot getSlotOfCoord(int r, int c) {
 
 		for(Slot s: this.slots) {
 			if(columnOfIndex(s.getIndex())==c && rowOfIndex(s.getIndex())==r)
 				return  s;
 		}
 		return null;
+	}
+	
+	private boolean isEmpty() {
+		for(Slot slot: this.slots) {
+			if(slot.getTile() != null) {
+				return false;
+			}
+		}
+		return true;
 	}
 }
 
