@@ -10,6 +10,8 @@ public class Board {
 	//***************************************************
 	private List<Slot> slots;
 
+	
+
 	//***************************************************
 	//------------------ATTRIBUTES-----------------------
 	//***************************************************
@@ -194,12 +196,12 @@ public class Board {
 			}
 		}
 	}
-
-	private int coordToIndex(int row, int col) {
+	
+	public int coordToIndex(int row, int col) {
 		return (row*row) + row + col;
 	}
 
-	private int rowOfIndex(int x) {
+	public int rowOfIndex(int x) {
 
 		for(int i=0;i<=5;i++) {
 			if ( x>=i*i && x<(i+1)*(i+1) )
@@ -208,7 +210,7 @@ public class Board {
 		return -1;
 	}
 
-	private int columnOfIndex(int x) {
+	public int columnOfIndex(int x) {
 		int r=rowOfIndex(x);
 		if(x<r*(r+1)) {
 			int i=0;
@@ -229,7 +231,7 @@ public class Board {
 		return -15;
 	}
 
-	private Slot getSlotOfCoord(int r, int c) {
+	public Slot getSlotOfCoord(int r, int c) {
 
 		for(Slot s: this.slots) {
 			if(columnOfIndex(s.getIndex())==c && rowOfIndex(s.getIndex())==r)
@@ -238,13 +240,17 @@ public class Board {
 		return null;
 	}
 	
-	private boolean isEmpty() {
+	public boolean isEmpty() {
 		for(Slot slot: this.slots) {
 			if(slot.getTile() != null) {
 				return false;
 			}
 		}
 		return true;
+	}
+	
+	public List<Slot> getSlots() {
+		return slots;
 	}
 }
 
