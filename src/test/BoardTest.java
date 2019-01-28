@@ -92,6 +92,7 @@ public class BoardTest {
 		assertEquals(board.placeTile(tile, 50),-1);
 	}
 	
+	
 	@Test
 	public void testCanBePlaced() {
 		Board board=new Board();
