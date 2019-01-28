@@ -29,18 +29,16 @@ public class InputThread implements Runnable {
 	@Override
 	public void run() {
 		String msg;
-		ConsoleInputReadTask input = new ConsoleInputReadTask();
-		try {
-			while(this.running) {
-				msg = input.call();
-				if(msg != null) {
-					this.peer.write(msg);
-				}
-			}
+		Scanner scanner = new Scanner(System.in);
 		
-		} catch (IOException e) {
-			e.printStackTrace();
+		while(this.running) {
+			System.out.print("> ");
+			msg = scanner.nextLine();
+			if(msg != null) {
+				this.peer.write(msg);
+			}
 		}
+		
 	}
 	
 	//***************************************************
