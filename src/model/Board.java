@@ -93,6 +93,7 @@ public class Board {
 			}
 		}
 		
+		
 		Slot vertical;
 		if((vertical = slot.getVertical()) != null) {
 			if(vertical.getTile() != null) {

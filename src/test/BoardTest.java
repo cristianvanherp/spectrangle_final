@@ -93,6 +93,7 @@ public class BoardTest {
 	}
 	
 	
+	
 	@Test
 	public void testCanBePlaced() {
 		Board board=new Board();
