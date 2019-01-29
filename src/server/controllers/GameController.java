@@ -56,6 +56,7 @@ public class GameController extends Controller {
 		Player player = database.getPlayer(peer);
 		int status = player.placeTile(index, tileStr);
 		
+		
 		switch(status) {
 		case 403:
 			peer.write("403 It's not your turn.");
@@ -65,6 +66,11 @@ public class GameController extends Controller {
 			break;
 		default:
 			Messenger.broadcast(player.getGame().getPlayers(), "placedTile " + player.getNickname() + " " + index + " " + tileStr);
+			try {
+				Thread.sleep(5);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			break;
 		}
 	}
