@@ -86,7 +86,7 @@ public class Player {
 		}
 		
 		for(int i = 0 ; i < 6 ; i++) {
-			if(tile.toString() == tileStr) {
+			if(tileStr.equals(tile.toString())) {
 				break;
 			}
 			tile.rotate();

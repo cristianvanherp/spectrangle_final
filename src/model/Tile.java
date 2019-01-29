@@ -111,6 +111,16 @@ public class Tile {
 		}
 	}
 	
+	public void invert() {
+		String aux = this.toString();
+		for(int i = 0 ; i < 6 ; i++) {
+			this.rotate();
+			if(this.toString().equals(aux)) {
+				return;
+			}
+		}
+	}
+	
 	//***************************************************
 	//------------------GETTERS/SETTERS------------------
 	//***************************************************

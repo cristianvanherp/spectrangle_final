@@ -44,8 +44,13 @@ public class Board {
 		}
 		
 		edges = this.canBePlaced(slot, tile);
+		if(edges == 0) {
+			tile.rotate();
+			edges = this.canBePlaced(slot, tile);
+		}
 		
 		if(edges == 0) {
+			tile.rotate();
 			return -1;
 		}
 		
@@ -60,11 +65,12 @@ public class Board {
 	public int canBePlaced(Slot slot, Tile tile) {
 		int edges = 0;
 		
-		if(!slot.getOrientation().equals(tile.getOrientation()) && !(tile.getColorLeft() == tile.getColorRight() && tile.getColorLeft() == tile.getColorVertical())) {
-			return 0;
-		}
-		
 		if(this.isEmpty()) {
+			
+			if(tile.getOrientation().equals(slot.getOrientation())) {
+				tile.invert();
+			}
+			
 			return 1;
 		}
 		
