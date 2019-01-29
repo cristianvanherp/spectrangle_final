@@ -56,7 +56,6 @@ public class GameController extends Controller {
 		Player player = database.getPlayer(peer);
 		int status = player.placeTile(index, tileStr);
 		
-		
 		switch(status) {
 		case 403:
 			peer.write("403 It's not your turn.");

@@ -36,7 +36,7 @@ public class Client {
 		this.messenger = new Messenger(controllers);
 		this.socket = new Socket(this.host, this.port);
 		this.database.setPeer(new Peer(this.socket, this.messenger, new ClientPeerSetup(this.database)));
-		this.database.setInputThread(new InputThread(this.database.getPeer()));
+		this.database.setInputThread(new InputThread(this.database.getPeer(), this.messenger));
 	}
 	
 	//***************************************************

@@ -25,6 +25,9 @@ public class PlayerController extends Controller {
 		case "features":
 			this.features(msg.getArgs());
 			break;
+		case "nickname":
+			this.nickname(msg.getArgs().get(0));
+			break;
 		default:
 			break;
 		}
@@ -41,6 +44,11 @@ public class PlayerController extends Controller {
 	public void features(List<String> args) {
 		ClientDatabase database = (ClientDatabase)this.getDatabase();
 		database.getPeer().write("features");
+	}
+	
+	public void nickname(String nickname) {
+		ClientDatabase database = (ClientDatabase)this.getDatabase();
+		database.getPlayer().setNickname(nickname);
 	}
 	
 }

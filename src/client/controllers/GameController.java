@@ -47,6 +47,9 @@ public class GameController extends Controller {
 		case "requestMove":
 			this.requestMove();
 			break;
+		case "rotate":
+			this.rotate(msg.getArgs().get(0));
+			break;
 		case "players":
 			this.players(msg.getArgs());
 			break;
@@ -72,7 +75,12 @@ public class GameController extends Controller {
 		List<Player> players = new ArrayList<Player>();
 		
 		for(String nickname: args) {
-			players.add(new Player(nickname));
+			if(nickname.equals(database.getPlayer().getNickname())) {
+				players.add(database.getPlayer());
+			}
+			else {
+				players.add(new Player(nickname));
+			}
 		}
 		
 		Game game = new Game(players, null);
@@ -179,6 +187,19 @@ public class GameController extends Controller {
 				player.leaveGame();
 			}
 		}
+	}
+	
+	public void rotate(String tileStr) {
+		ClientDatabase database = (ClientDatabase)this.getDatabase();
+		Game game = database.getGame();
+		Player player = database.getPlayer();
+		
+		for(Tile tile: player.getTiles()) {
+			if(tile.isEquivalent(tileStr)) {
+				tile.rotate();
+			}
+		}
+		this.view.draw();
 	}
 
 }

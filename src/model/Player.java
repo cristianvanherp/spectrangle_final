@@ -85,6 +85,13 @@ public class Player {
 			}
 		}
 		
+		for(int i = 0 ; i < 6 ; i++) {
+			if(tile.toString() == tileStr) {
+				break;
+			}
+			tile.rotate();
+		}
+		
 		if(tile == null) {
 			return 404;
 		}

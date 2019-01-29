@@ -14,13 +14,15 @@ public class InputThread implements Runnable {
 	private Peer peer;
 	private Thread thread;
 	private boolean running;
+	private Messenger messenger;
 
 	//***************************************************
 	//---------------------CONSTRUCTORS------------------
 	//***************************************************
-	public InputThread(Peer peer)  {
+	public InputThread(Peer peer, Messenger messenger)  {
 		this.peer = peer;
 		this.running = true;
+		this.messenger = messenger;
 	}
 	
 	//***************************************************
@@ -28,14 +30,16 @@ public class InputThread implements Runnable {
 	//***************************************************
 	@Override
 	public void run() {
-		String msg;
+		String input;
 		Scanner scanner = new Scanner(System.in);
 		
 		while(this.running) {
 			System.out.print("> ");
-			msg = scanner.nextLine();
-			if(msg != null) {
-				this.peer.write(msg);
+			input = scanner.nextLine();
+			this.messenger.forward(null, input);
+			
+			if(input != null) {
+				this.peer.write(input);
 			}
 		}
 		

@@ -43,27 +43,10 @@ public class Board {
 			return -1;
 		}
 		
-		if(!this.isEmpty()) {
-			for(int i = 0 ; i < 6 ; i++) {
-				if((edges = this.canBePlaced(slot, tile)) != 0) {
-					break;
-				}
-				tile.rotate();
-			}
-			
-			if(edges == 0) {
-				return -1;
-			}
-		}
-		else {
-			if(slot.getBonus() > 1) {
-				return -1;
-			}
-			
-			edges = 1;
-			if(!tile.getOrientation().equals(slot.getOrientation())) {
-				tile.rotate();
-			}
+		edges = this.canBePlaced(slot, tile);
+		
+		if(edges == 0) {
+			return -1;
 		}
 		
 		points = tile.getPoints() * edges * slot.getBonus();
@@ -76,6 +59,14 @@ public class Board {
 	
 	public int canBePlaced(Slot slot, Tile tile) {
 		int edges = 0;
+		
+		if(!slot.getOrientation().equals(tile.getOrientation())) {
+			return 0;
+		}
+		
+		if(this.isEmpty()) {
+			return 1;
+		}
 		
 		Slot left;
 		if((left = slot.getLeft()) != null) {
