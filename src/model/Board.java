@@ -67,7 +67,7 @@ public class Board {
 		
 		if(this.isEmpty()) {
 			
-			if(tile.getOrientation().equals(slot.getOrientation())) {
+			if(!tile.getOrientation().equals(slot.getOrientation())) {
 				tile.invert();
 			}
 			

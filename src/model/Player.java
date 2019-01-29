@@ -85,15 +85,15 @@ public class Player {
 			}
 		}
 		
+		if(tile == null) {
+			return 404;
+		}
+		
 		for(int i = 0 ; i < 6 ; i++) {
 			if(tileStr.equals(tile.toString())) {
 				break;
 			}
 			tile.rotate();
-		}
-		
-		if(tile == null) {
-			return 404;
 		}
 		
 		return this.game.placeTile(this, index, tile);
