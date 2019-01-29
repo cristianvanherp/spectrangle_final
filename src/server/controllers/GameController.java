@@ -20,7 +20,7 @@ public class GameController extends Controller {
 	//---------------------PUBLIC METHODS----------------
 	//***************************************************
 	@Override
-	public void forward(Peer peer, Message msg) {
+	public void forward(Peer peer, Message msg, Testin test) {
 		switch(msg.getCommand()) {
 		case "placeTile":
 			this.placeTile(peer, msg.getArgs().get(0), msg.getArgs().get(1));
