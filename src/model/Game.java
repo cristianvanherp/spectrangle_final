@@ -6,8 +6,9 @@ import java.util.*;
 import enums.Status;
 import input.Messenger;
 import networking.*;
+import observer.GameAttribute;
 
-public class Game implements Runnable {
+public class Game implements Runnable, Observer {
 	//***************************************************
 	//------------------CONSTANTS------------------------
 	//***************************************************
@@ -221,7 +222,7 @@ public class Game implements Runnable {
 		
 		while(this.status.equals(Status.RUNNING)) {
 			for(Player player: this.players) {
-				player.getPeer().write("requestMove");
+				player.requestMove();
 				while(this.turn.equals(player)) {
 					try {
 						Thread.sleep(500);
@@ -240,6 +241,32 @@ public class Game implements Runnable {
 				Messenger.broadcast(this.players, "drawnTile " + player.getNickname() + " " + tile.toString());
 			}
 		}
+	}
+	
+	//***************************************************
+	//------------------OBSERVER METHODS-----------------
+	//***************************************************
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		GameAttribute attr = (GameAttribute)arg1;
+		Tile tile;
+		Player player;
+		
+		switch(attr.getAction()) {
+		case "drawnTile":
+			player = attr.getPlayers().get(0);
+			tile = attr.getTiles().get(0);
+			Messenger.broadcast(player.getGame().getPlayers(), "drawnTile " + player.getNickname() + " " + tile.toString());			
+			break;
+		case "placedTile":
+			player = attr.getPlayers().get(0);
+			Integer index = attr.getIndex().get(0);
+			tile = attr.getTiles().get(0);
+			Messenger.broadcast(player.getGame().getPlayers(), "placedTile " + player.getNickname() + " " + index + " " + tile.toString());
+		default:
+			break;
+		}
+		
 	}
 
 }

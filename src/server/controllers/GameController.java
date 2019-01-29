@@ -20,12 +20,14 @@ public class GameController extends Controller {
 	//---------------------PUBLIC METHODS----------------
 	//***************************************************
 	@Override
-	public void forward(Peer peer, Message msg, Testin test) {
+	public void forward(Peer peer, Message msg) {
 		switch(msg.getCommand()) {
-		case "placeTile":
+		case "placeTile":			
+			if(msg.getArgs().size() < 2) return;
 			this.placeTile(peer, msg.getArgs().get(0), msg.getArgs().get(1));
 			break;
 		case "switchTile":
+			if(msg.getArgs().size() < 1) return;
 			this.switchTile(peer, msg.getArgs().get(0));
 			break;
 		case "skipMove":
@@ -44,29 +46,30 @@ public class GameController extends Controller {
 	//***************************************************
 	public void placeTile(Peer peer, String indexStr, String tileStr) {
 		Integer index;
-
+		ServerDatabase database = (ServerDatabase)this.getDatabase();
+		Player player = database.getPlayer(peer);
+		
 		try {
 			index = Integer.parseInt(indexStr);
 		} catch(NumberFormatException e) {
-			peer.write("404 Invalid index. Try again.");
+			this.writeErrorMessage(peer, 404, "Invalid index. Try again.");
 			return;
 		}
 		
-		ServerDatabase database = (ServerDatabase)this.getDatabase();
-		Player player = database.getPlayer(peer);
 		int status = player.placeTile(index, tileStr);
 		
 		switch(status) {
 		case 403:
-			peer.write("403 It's not your turn.");
+			this.writeErrorMessage(peer, 403, "It's not your turn.");
 			break;
 		case 404:
-			peer.write("404 You don't have that tile or the index is not valid. Try again.");
+			this.writeErrorMessage(peer, 404, "You don't have that tile or the index is not valid. Try again.");
 			break;
 		default:
 			Messenger.broadcast(player.getGame().getPlayers(), "placedTile " + player.getNickname() + " " + index + " " + tileStr);
+			
 			try {
-				Thread.sleep(5);
+				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -120,7 +123,6 @@ public class GameController extends Controller {
 		
 		player.leaveGame();
 		Messenger.broadcast(game.getPlayers(), "players " + game.getPlayersStr());
-		
 	}
 
 }

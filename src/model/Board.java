@@ -44,6 +44,7 @@ public class Board {
 		}
 		
 		edges = this.canBePlaced(slot, tile);
+		
 		if(edges == 0) {
 			tile.invert();
 			edges = this.canBePlaced(slot, tile);
@@ -55,8 +56,8 @@ public class Board {
 		}
 		
 		points = tile.getPoints() * edges * slot.getBonus();
-		
 		slot.setTile(tile);
+		
 		return points;
 	}
 	

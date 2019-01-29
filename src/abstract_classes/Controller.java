@@ -39,8 +39,12 @@ public abstract class Controller {
 		return false;
 	}
 	
+	public void writeErrorMessage(Peer peer, int status, String msg) {
+		peer.write(status + " " + msg);
+	}
+	
 	//***************************************************
-	//---------------------PUBLIC METHODS----------------
+	//---------------------GETTERS/SETTERS---------------
 	//***************************************************
 	public Database getDatabase() {
 		return database;

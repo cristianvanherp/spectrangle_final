@@ -30,18 +30,23 @@ public class GameController extends Controller {
 	public void forward(Peer peer, Message msg) {
 		switch(msg.getCommand()) {
 		case "start":
+			if(msg.getArgs().size() < Game.MIN_PLAYERS) return;
 			this.start(msg.getArgs());
 			break;
 		case "drawnTile":
+			if(msg.getArgs().size() < 2) return;
 			this.drawnTile(msg.getArgs().get(0), msg.getArgs().get(1));
 			break;
 		case "placedTile":
+			if(msg.getArgs().size() < 3) return;
 			this.placedTile(msg.getArgs().get(0), msg.getArgs().get(1), msg.getArgs().get(2));
 			break;
 		case "switchedTile":
+			if(msg.getArgs().size() < 3) return;
 			this.switchedTile(msg.getArgs().get(0), msg.getArgs().get(1), msg.getArgs().get(2));
 			break;
 		case "skippedMove":
+			if(msg.getArgs().size() < 1) return;
 			this.skippedMove(msg.getArgs().get(0));
 			break;
 		case "requestMove":
@@ -126,7 +131,6 @@ public class GameController extends Controller {
 		}
 		
 		player.placeTile(index, tileStr);
-		
 		this.view.draw();
 	}
 	
@@ -191,7 +195,6 @@ public class GameController extends Controller {
 	
 	public void rotate(String tileStr) {
 		ClientDatabase database = (ClientDatabase)this.getDatabase();
-		Game game = database.getGame();
 		Player player = database.getPlayer();
 		
 		for(Tile tile: player.getTiles()) {

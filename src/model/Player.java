@@ -4,8 +4,9 @@ import java.util.*;
 
 import networking.*;
 import server.ServerDatabase;
+import observer.GameAttribute;
 
-public class Player {
+public class Player extends Observable {
 	//***************************************************
 	//------------------RELATIONSHIPS---------------------
 	//***************************************************
@@ -145,8 +146,12 @@ public class Player {
 		this.game.leaveGame(this);
 	}
 	
+	public void requestMove() {
+		this.getPeer().write("requestMove");
+	}
+	
 	//***************************************************
-	//------------------GETTERS/SETTERS---------------------
+	//------------------GETTERS/SETTERS------------------
 	//***************************************************
 	public Game getGame() {
 		return game;
@@ -154,6 +159,7 @@ public class Player {
 
 	public void setGame(Game game) {
 		this.game = game;
+		this.addObserver(game);
 	}
 	
 	public Integer getScore() {
@@ -204,4 +210,11 @@ public class Player {
 		this.tiles = tiles;
 	}
 	
+	//***************************************************
+	//------------------OBSERVABLE METHODS---------------
+	//***************************************************
+	public void warnObservers(GameAttribute attr) {
+		this.setChanged();
+		this.notifyObservers(attr);
+	}
 }

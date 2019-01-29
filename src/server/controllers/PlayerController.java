@@ -23,6 +23,7 @@ public class PlayerController extends Controller {
 	public void forward(Peer peer, Message msg) {
 		switch(msg.getCommand()) {
 		case "nickname":
+			if(msg.getArgs().size() < 1) return;
 			this.nickname(peer, msg.getStringArgs());
 			break;
 		case "features":
