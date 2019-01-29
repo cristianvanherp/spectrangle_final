@@ -48,7 +48,15 @@ public class PlayerController extends Controller {
 	
 	public void nickname(String nickname) {
 		ClientDatabase database = (ClientDatabase)this.getDatabase();
-		database.getPlayer().setNickname(nickname);
+		Player player = database.getPlayer();
+		
+		if(player != null) {
+			player.setNickname(nickname);
+		}
+		else {
+			player = new Player(nickname);
+			database.setPlayer(player);
+		}
 	}
 	
 }

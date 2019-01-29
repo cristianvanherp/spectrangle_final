@@ -92,6 +92,7 @@ public class Tile {
 	}
 	
 	private void updateDrawing() {
+		this.drawingLines = new ArrayList<String>();
 		if(this.orientation.equals(Orientation.UP)) {
 			this.drawingLines.add("     ^      ");
 			this.drawingLines.add("    / \\     ");
@@ -103,7 +104,7 @@ public class Tile {
 		else {
 			this.drawingLines.add("----------- ");
 			this.drawingLines.add(" \\   "+String.valueOf(this.colorVertical)+"   /  ");
-			this.drawingLines.add("  \\"+String.valueOf(this.colorLeft)+" " + String.valueOf(this.colorVertical) + " "+String.valueOf(this.colorRight)+"/   ");
+			this.drawingLines.add("  \\"+String.valueOf(this.colorLeft)+" " + String.valueOf(this.points) + " "+String.valueOf(this.colorRight)+"/   ");
 			this.drawingLines.add("   \\   /    ");
 			this.drawingLines.add("    \\ /     ");
 			this.drawingLines.add("     X      ");	

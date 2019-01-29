@@ -60,7 +60,7 @@ public class Board {
 	public int canBePlaced(Slot slot, Tile tile) {
 		int edges = 0;
 		
-		if(!slot.getOrientation().equals(tile.getOrientation())) {
+		if(!slot.getOrientation().equals(tile.getOrientation()) && !(tile.getColorLeft() == tile.getColorRight() && tile.getColorLeft() == tile.getColorVertical())) {
 			return 0;
 		}
 		
