@@ -74,6 +74,10 @@ public class Board {
 			return 1;
 		}
 		
+		if(!tile.getOrientation().equals(slot.getOrientation())) {
+			return 0;
+		}
+		
 		Slot left;
 		if((left = slot.getLeft()) != null) {
 			if(left.getTile() != null) {
