@@ -45,12 +45,12 @@ public class Board {
 		
 		edges = this.canBePlaced(slot, tile);
 		if(edges == 0) {
-			tile.rotate();
+			tile.invert();
 			edges = this.canBePlaced(slot, tile);
 		}
 		
 		if(edges == 0) {
-			tile.rotate();
+			tile.invert();
 			return -1;
 		}
 		
