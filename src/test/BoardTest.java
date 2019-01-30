@@ -54,10 +54,10 @@ public class BoardTest {
 	@Test
 	public void testSlotOfCoord() {
 		Board board=new Board();
-		assertTrue(board.getSlots().get(0).equals(board.getSlotOfCoord(0, 0)));
-		assertTrue(board.getSlots().get(1).equals(board.getSlotOfCoord(1, -1)));
-		assertTrue(board.getSlots().get(26).equals(board.getSlotOfCoord(5, -4)));
-		assertTrue(board.getSlots().get(31).equals(board.getSlotOfCoord(5, 1)));
+		assertTrue(board.getSlots().get(0).equalsIgnoreCase(board.getSlotOfCoord(0, 0)));
+		assertTrue(board.getSlots().get(1).equalsIgnoreCase(board.getSlotOfCoord(1, -1)));
+		assertTrue(board.getSlots().get(26).equalsIgnoreCase(board.getSlotOfCoord(5, -4)));
+		assertTrue(board.getSlots().get(31).equalsIgnoreCase(board.getSlotOfCoord(5, 1)));
 		
 		
 	}
@@ -65,18 +65,18 @@ public class BoardTest {
 	@Test
 	public void testNeighbours() {
 		Board board=new Board();
-		assertTrue( board.getSlots().get(12).getLeft().equals(board.getSlots().get(11)) );
-		assertTrue( board.getSlots().get(23).getLeft().equals(board.getSlots().get(22)) );
-		assertTrue( board.getSlots().get(34).getLeft().equals(board.getSlots().get(33)) );
+		assertTrue( board.getSlots().get(12).getLeft().equalsIgnoreCase(board.getSlots().get(11)) );
+		assertTrue( board.getSlots().get(23).getLeft().equalsIgnoreCase(board.getSlots().get(22)) );
+		assertTrue( board.getSlots().get(34).getLeft().equalsIgnoreCase(board.getSlots().get(33)) );
 		
 				
-    	assertTrue( board.getSlots().get(10).getRight().equals(board.getSlots().get(11)) );
-		assertTrue( board.getSlots().get(22).getRight().equals(board.getSlots().get(23)) );
-		assertTrue( board.getSlots().get(25).getRight().equals(board.getSlots().get(26)) );
+    	assertTrue( board.getSlots().get(10).getRight().equalsIgnoreCase(board.getSlots().get(11)) );
+		assertTrue( board.getSlots().get(22).getRight().equalsIgnoreCase(board.getSlots().get(23)) );
+		assertTrue( board.getSlots().get(25).getRight().equalsIgnoreCase(board.getSlots().get(26)) );
 
-		assertTrue( board.getSlots().get(28).getVertical().equals(board.getSlots().get(18)) );
-		assertTrue( board.getSlots().get(3).getVertical().equals(board.getSlots().get(7)) );
-		assertTrue( board.getSlots().get(4).getVertical().equals(board.getSlots().get(10)) );
+		assertTrue( board.getSlots().get(28).getVertical().equalsIgnoreCase(board.getSlots().get(18)) );
+		assertTrue( board.getSlots().get(3).getVertical().equalsIgnoreCase(board.getSlots().get(7)) );
+		assertTrue( board.getSlots().get(4).getVertical().equalsIgnoreCase(board.getSlots().get(10)) );
 	   
 	}
 	
@@ -86,7 +86,7 @@ public class BoardTest {
 	    Tile tile=new Tile(Orientation.UP,'R','R','R',6);
 		
 	    board.placeTile(tile,0);
-		assertTrue(board.getSlotOfCoord(0,0).getTile().equals(tile));
+		assertTrue(board.getSlotOfCoord(0,0).getTile().equalsIgnoreCase(tile));
 		
 		
 		assertEquals(board.placeTile(tile, 50),-1);

@@ -32,7 +32,7 @@ public abstract class Controller {
 	//***************************************************
 	public boolean hasMethod(String method) {
 		for(Method m: this.getClass().getMethods()) {
-			if(m.getName().equals(method)) {
+			if(m.getName().equalsIgnoreCase(method)) {
 				return true;
 			}
 		}

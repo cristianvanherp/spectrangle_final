@@ -75,7 +75,7 @@ public class Server implements Observer {
 		Peer peer = (Peer)arg0;
 		String msg = (String)arg1;
 		
-		if(msg.equals("disconnected")) {
+		if(msg.equalsIgnoreCase("disconnected")) {
 			this.database.removePeer(peer);	
 			System.out.print("Client at " + peer.getAddress() + " has disconnected. Clients left: " + this.database.getPeers().size() + "\n");
 		}

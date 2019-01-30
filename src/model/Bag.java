@@ -35,7 +35,7 @@ public class Bag {
 	
 	public Tile drawTile(String tile) {
 		for(Tile t: this.tiles) {
-			if(t.toString().equals(tile)) {
+			if(t.toString().equalsIgnoreCase(tile)) {
 				this.tiles.remove(t);
 				return t;
 			}

@@ -95,7 +95,7 @@ public abstract class Player extends Observable {
 		}
 		
 		for(int i = 0 ; i < 6 ; i++) {
-			if(tileStr.equals(tile.toString())) {
+			if(tileStr.equalsIgnoreCase(tile.toString())) {
 				break;
 			}
 			tile.rotate();

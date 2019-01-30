@@ -80,7 +80,7 @@ public class GameController extends Controller {
 		List<Player> players = new ArrayList<Player>();
 		
 		for(String nickname: args) {
-			if(nickname.equals(database.getPlayer().getNickname())) {
+			if(nickname.equalsIgnoreCase(database.getPlayer().getNickname())) {
 				players.add(database.getPlayer());
 			}
 			else {
@@ -99,7 +99,7 @@ public class GameController extends Controller {
 		List<Player> players = database.getGame().getPlayers();
 		
 		for(Player player: players) {
-			if(nickname.equals(player.getNickname())) {
+			if(nickname.equalsIgnoreCase(player.getNickname())) {
 				player.drawTile(tileStr);
 			}
 		}
@@ -114,7 +114,7 @@ public class GameController extends Controller {
 		Integer index;
 		
 		for(Player p: game.getPlayers()) {
-			if(nickname.equals(p.getNickname())) {
+			if(nickname.equalsIgnoreCase(p.getNickname())) {
 				player = p;
 				break;
 			}
@@ -140,7 +140,7 @@ public class GameController extends Controller {
 		Player player = null;
 		
 		for(Player p: game.getPlayers()) {
-			if(nickname.equals(p.getNickname())) {
+			if(nickname.equalsIgnoreCase(p.getNickname())) {
 				player = p;
 				break;
 			}
@@ -164,7 +164,7 @@ public class GameController extends Controller {
 		Player player = null;
 		
 		for(Player p: game.getPlayers()) {
-			if(nickname.equals(p.getNickname())) {
+			if(nickname.equalsIgnoreCase(p.getNickname())) {
 				player = p;
 				break;
 			}
