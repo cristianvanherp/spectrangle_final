@@ -66,14 +66,11 @@ public class GameController extends Controller {
 			this.writeErrorMessage(peer, 404, "You don't have that tile or the index is not valid. Try again.");
 			break;
 		default:
-			Messenger.broadcast(player.getGame().getPlayers(), "placedTile " + player.getNickname() + " " + index + " " + tileStr);
-			
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
 			break;
+		}
+		
+		if(status == 0) {
+			player.getGame().setTurn(new Player("joseph"));
 		}
 	}
 	

@@ -3,13 +3,14 @@ package observer;
 import java.util.*;
 import model.*;
 
-public class GameAttribute {
+public class ActionAttribute {
 	private List<Tile> tiles;
 	private List<Player> players;
 	private List<Integer> indexes;
 	private String action;
 	
-	public GameAttribute(String action) {
+	public ActionAttribute(String action) {
+		this.action = action;
 		this.tiles = new ArrayList<Tile>();
 		this.players = new ArrayList<Player>();
 		this.indexes = new ArrayList<Integer>();

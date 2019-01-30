@@ -2,9 +2,10 @@ package model;
 
 import java.util.*;
 
+import input.Messenger;
 import networking.*;
 import server.ServerDatabase;
-import observer.GameAttribute;
+import observer.ActionAttribute;
 
 public class Player extends Observable {
 	//***************************************************
@@ -59,6 +60,11 @@ public class Player extends Observable {
 		Tile tile = this.game.getBag().drawTile();
 		this.tiles.add(tile);
 		
+		ActionAttribute attr = new ActionAttribute("drawnTile");
+		attr.addPlayer(this);
+		attr.addTile(tile);
+		this.warnObservers(attr);
+		
 		return tile;
 	}
 	
@@ -78,6 +84,7 @@ public class Player extends Observable {
 	
 	public int placeTile(int index, String tileStr) {
 		Tile tile = null;
+		int status;
 		
 		for(Tile t: this.tiles) {
 			if(t.isEquivalent(tileStr)) {
@@ -97,7 +104,17 @@ public class Player extends Observable {
 			tile.rotate();
 		}
 		
-		return this.game.placeTile(this, index, tile);
+		status = this.game.placeTile(this, index, tile);
+		
+		if(status == 0) {
+			ActionAttribute attr = new ActionAttribute("placedTile");
+			attr.addPlayer(this);
+			attr.addIndex(index);
+			attr.addTile(tile);
+			this.warnObservers(attr);
+		}
+		
+		return status;
 	}
 	
 	public int switchTile(String tileStr) {
@@ -213,7 +230,7 @@ public class Player extends Observable {
 	//***************************************************
 	//------------------OBSERVABLE METHODS---------------
 	//***************************************************
-	public void warnObservers(GameAttribute attr) {
+	public void warnObservers(ActionAttribute attr) {
 		this.setChanged();
 		this.notifyObservers(attr);
 	}

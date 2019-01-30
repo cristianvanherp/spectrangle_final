@@ -6,13 +6,13 @@ import java.util.*;
 import enums.Status;
 import input.Messenger;
 import networking.*;
-import observer.GameAttribute;
+import observer.ActionAttribute;
 
 public class Game implements Runnable, Observer {
 	//***************************************************
 	//------------------CONSTANTS------------------------
 	//***************************************************
-	public static final int MIN_PLAYERS = 2;
+	public static final int MIN_PLAYERS = 1;
 	public static final int MAX_PLAYERS = 4;
 	
 	//***************************************************
@@ -236,9 +236,10 @@ public class Game implements Runnable, Observer {
 					Messenger.broadcast(this.players, "end");
 					break;
 				}
-				
-				Tile tile = player.drawTile();
-				Messenger.broadcast(this.players, "drawnTile " + player.getNickname() + " " + tile.toString());
+				else {
+					player.drawTile();		
+				}
+				this.setTurn(player);
 			}
 		}
 	}
@@ -248,23 +249,32 @@ public class Game implements Runnable, Observer {
 	//***************************************************
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		GameAttribute attr = (GameAttribute)arg1;
+		ActionAttribute attr = (ActionAttribute)arg1;
+		Player player = attr.getPlayers().get(0);
 		Tile tile;
-		Player player;
+		
+		if(player.getPeer() == null) {
+			return;
+		}
 		
 		switch(attr.getAction()) {
-		case "drawnTile":
-			player = attr.getPlayers().get(0);
-			tile = attr.getTiles().get(0);
-			Messenger.broadcast(player.getGame().getPlayers(), "drawnTile " + player.getNickname() + " " + tile.toString());			
-			break;
 		case "placedTile":
-			player = attr.getPlayers().get(0);
 			Integer index = attr.getIndex().get(0);
 			tile = attr.getTiles().get(0);
-			Messenger.broadcast(player.getGame().getPlayers(), "placedTile " + player.getNickname() + " " + index + " " + tile.toString());
+			Messenger.broadcast(this.players, "placedTile " + player.getNickname() + " " + index + " " + tile.toString());
+			break;
+		case "drawnTile":
+			tile = attr.getTiles().get(0);
+			Messenger.broadcast(this.players, "drawnTile " + player.getNickname() + " " + tile.toString());
+			break;
 		default:
 			break;
+		}
+		
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 		
 	}
