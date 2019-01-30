@@ -66,7 +66,7 @@ public class Game implements Runnable, Observer {
 	public int placeTile(Player player, int index, Tile tile) {
 		Integer points;
 		
-		if(!this.getTurn().equalsIgnoreCase(player)) {
+		if(!this.getTurn().equals(player)) {
 			return 403;
 		}
 		
@@ -84,7 +84,7 @@ public class Game implements Runnable, Observer {
 	
 	public int switchTile(Player player, Tile tile) {
 		
-		if(!this.getTurn().equalsIgnoreCase(player)) {
+		if(!this.getTurn().equals(player)) {
 			return 403;
 		}
 		
@@ -101,7 +101,7 @@ public class Game implements Runnable, Observer {
 	
 	public int switchTile(Player player, Tile tile, String newTileStr) {
 		
-		if(!this.getTurn().equalsIgnoreCase(player)) {
+		if(!this.getTurn().equals(player)) {
 			return 403;
 		}
 		
@@ -226,10 +226,10 @@ public class Game implements Runnable, Observer {
 			}
 		}
 		
-		while(this.status.equalsIgnoreCase(Status.RUNNING)) {
+		while(this.status.equals(Status.RUNNING)) {
 			for(Player player: this.players) {
 				player.requestMove();
-				while(this.turn.equalsIgnoreCase(player)) {
+				while(this.turn.equals(player)) {
 					try {
 						Thread.sleep(500);
 					} catch (InterruptedException e) {

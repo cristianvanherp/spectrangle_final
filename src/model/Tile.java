@@ -35,7 +35,7 @@ public class Tile {
 	public void rotate() {
 		char aux_left = this.colorLeft, aux_right = this.colorRight, aux_vertical = this.colorVertical;
 		
-		if(this.orientation.equalsIgnoreCase(Orientation.UP)) {
+		if(this.orientation.equals(Orientation.UP)) {
 			this.orientation = Orientation.DOWN;
 			this.colorLeft = aux_vertical;
 			this.colorRight = aux_right;
@@ -53,7 +53,7 @@ public class Tile {
 	
 	@Override
 	public String toString() {
-		if(this.orientation.equalsIgnoreCase(Orientation.UP)) {
+		if(this.orientation.equals(Orientation.UP)) {
 			return String.valueOf(this.colorRight) + String.valueOf(this.colorVertical) + String.valueOf(this.colorLeft) + this.points.toString();
 		}
 		else {
@@ -93,7 +93,7 @@ public class Tile {
 	
 	private void updateDrawing() {
 		this.drawingLines = new ArrayList<String>();
-		if(this.orientation.equalsIgnoreCase(Orientation.UP)) {
+		if(this.orientation.equals(Orientation.UP)) {
 			this.drawingLines.add("     ^      ");
 			this.drawingLines.add("    / \\     ");
 			this.drawingLines.add("   /   \\    ");
