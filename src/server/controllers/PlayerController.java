@@ -51,7 +51,7 @@ public class PlayerController extends Controller {
 		}
 		
 		for(Player p: database.getPlayers()) {
-			if(nickname.equals(p.getNickname())) {
+			if(nickname.equalsIgnoreCase(p.getNickname())) {
 				peer.write("403 That nickname has already been chosen. Pick another one");
 				return;
 			}
