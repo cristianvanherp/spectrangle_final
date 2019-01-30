@@ -61,53 +61,59 @@ public class Board {
 		return points;
 	}
 	
-	
-	
 	public int canBePlaced(Slot slot, Tile tile) {
 		int edges = 0;
+		int matching_edges = 0;
 		
 		if(this.isEmpty()) {
-			
 			if(!tile.getOrientation().equals(slot.getOrientation())) {
 				tile.invert();
 			}
-			
 			return 1;
 		}
+		else {
+			if(!tile.getOrientation().equals(slot.getOrientation())) {
+				return 0;
+			}
+			
+			Slot left;
+			if((left = slot.getLeft()) != null) {
+				if(left.getTile() != null) {
+					edges++;
+					if(left.getTile().getColorRight() == tile.getColorLeft() || tile.getColorLeft() == 'W' || left.getTile().getColorRight() == 'W') {
+						matching_edges++;
+					}
+				}
+			}
+			
+			Slot right;
+			if((right = slot.getRight()) != null) {
+				if(right.getTile() != null) {
+					edges++;
+					if(right.getTile().getColorLeft() == tile.getColorRight() || tile.getColorRight() == 'W' || right.getTile().getColorLeft() == 'W') {
+						matching_edges++;
+					}
+				}
+			}
+			
+			
+			Slot vertical;
+			if((vertical = slot.getVertical()) != null) {
+				if(vertical.getTile() != null) {
+					edges++;
+					if(vertical.getTile().getColorVertical() == tile.getColorVertical()  || tile.getColorVertical() == 'W' || vertical.getTile().getColorVertical() == 'W') {
+						matching_edges++;
+					}
+				}
+			}
+	
+		}
 		
-		if(!tile.getOrientation().equals(slot.getOrientation())) {
+		if(edges > matching_edges) {
 			return 0;
 		}
-		
-		Slot left;
-		if((left = slot.getLeft()) != null) {
-			if(left.getTile() != null) {
-				if(left.getTile().getColorRight() == tile.getColorLeft() || tile.getColorLeft() == 'W' || left.getTile().getColorRight() == 'W') {
-					edges++;
-				}
-			}
-		}
-		
-		Slot right;
-		if((right = slot.getRight()) != null) {
-			if(right.getTile() != null) {
-				if(right.getTile().getColorLeft() == tile.getColorRight() || tile.getColorRight() == 'W' || right.getTile().getColorLeft() == 'W') {
-					edges++;
-				}
-			}
-		}
-		
-		
-		Slot vertical;
-		if((vertical = slot.getVertical()) != null) {
-			if(vertical.getTile() != null) {
-				if(vertical.getTile().getColorVertical() == tile.getColorVertical()  || tile.getColorVertical() == 'W' || vertical.getTile().getColorVertical() == 'W') {
-					edges++;
-				}
-			}
-		}
-		
-		return edges;
+				
+		return matching_edges;
 	}
 	
 	public boolean canBePlaced(Tile tile) {
