@@ -7,13 +7,12 @@ import networking.*;
 import server.ServerDatabase;
 import observer.ActionAttribute;
 
-public class Player extends Observable {
+public abstract class Player extends Observable {
 	//***************************************************
 	//------------------RELATIONSHIPS---------------------
 	//***************************************************
 	private Game game;
 	private Lobby lobby;
-	private ScoreBoard scoreBoard;
 	private List<Tile> tiles;
 	
 	//***************************************************
@@ -29,7 +28,6 @@ public class Player extends Observable {
 	public Player(String nickname) {
 		this.nickname = nickname;
 		this.score = 0;
-		this.scoreBoard = new ScoreBoard();
 		this.tiles = new ArrayList<Tile>();
 	}
 	
@@ -37,7 +35,6 @@ public class Player extends Observable {
 		this.nickname = nickname;
 		this.score = 0;
 		this.peer = peer;
-		this.scoreBoard = new ScoreBoard();
 		this.tiles = new ArrayList<Tile>();
 	}
 	
@@ -119,7 +116,8 @@ public class Player extends Observable {
 	
 	public int switchTile(String tileStr) {
 		Tile tile = null;
-	
+		int status;
+		
 		for(Tile t: this.tiles) {
 			if(t.isEquivalent(tileStr)) {
 				tile = t;
@@ -131,7 +129,17 @@ public class Player extends Observable {
 			return 404;
 		}
 		
-		return this.game.switchTile(this, tile);
+		status = this.game.switchTile(this, tile);
+		
+		if(status == 0) {
+			ActionAttribute attr = new ActionAttribute("switchedTile");
+			attr.addTile(tile);
+			attr.addTile(this.lastTile());
+			attr.addPlayer(this);
+			this.warnObservers(attr);
+		}
+		
+		return status;
 	}
 	
 	public int switchTile(String oldTileStr, String newTileStr) {
@@ -156,16 +164,26 @@ public class Player extends Observable {
 	}
 	
 	public int skipMove() {
-		return this.game.skipMove(this);
+		int status;
+		status = this.game.skipMove(this);
+	
+		if(status == 0) {
+			ActionAttribute attr = new ActionAttribute("skippedMove");
+			attr.addPlayer(this);
+			this.warnObservers(attr);
+		}
+		
+		return status;
 	}
 	
 	public void leaveGame() {
 		this.game.leaveGame(this);
+		ActionAttribute attr = new ActionAttribute("playerLeft");
+		attr.addPlayer(this);
+		this.warnObservers(attr);
 	}
 	
-	public void requestMove() {
-		this.getPeer().write("requestMove");
-	}
+	public abstract void requestMove();
 	
 	//***************************************************
 	//------------------GETTERS/SETTERS------------------
@@ -209,14 +227,6 @@ public class Player extends Observable {
 
 	public void setPeer(Peer peer) {
 		this.peer = peer;
-	}
-
-	public ScoreBoard getScoreBoard() {
-		return scoreBoard;
-	}
-
-	public void setScoreBoard(ScoreBoard scoreBoard) {
-		this.scoreBoard = scoreBoard;
 	}
 
 	public List<Tile> getTiles() {

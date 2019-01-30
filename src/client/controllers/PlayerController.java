@@ -54,7 +54,7 @@ public class PlayerController extends Controller {
 			player.setNickname(nickname);
 		}
 		else {
-			player = new Player(nickname);
+			player = new HumanPlayer(nickname);
 			database.setPlayer(player);
 		}
 	}

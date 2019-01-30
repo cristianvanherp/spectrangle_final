@@ -84,14 +84,14 @@ public class GameController extends Controller {
 				players.add(database.getPlayer());
 			}
 			else {
-				players.add(new Player(nickname));
+				players.add(new HumanPlayer(nickname));
 			}
 		}
 		
 		Game game = new Game(players, null);
 		database.setGame(game);
 		this.view.setGame(game);
-		this.view.draw();
+		this.view.draw(true);
 	}
 	
 	public void drawnTile(String nickname, String tileStr) {
@@ -104,7 +104,7 @@ public class GameController extends Controller {
 			}
 		}
 		
-		this.view.draw();
+		this.view.draw(true);
 	}
 	
 	public void placedTile(String nickname, String indexStr, String tileStr) {
@@ -131,7 +131,7 @@ public class GameController extends Controller {
 		}
 		
 		player.placeTile(index, tileStr);
-		this.view.draw();
+		this.view.draw(true);
 	}
 	
 	public void switchedTile(String nickname, String oldTileStr, String newTileStr) {
@@ -151,7 +151,7 @@ public class GameController extends Controller {
 		}
 		
 		player.switchTile(oldTileStr, newTileStr);
-		this.view.draw();
+		this.view.draw(true);
 	}
 	
 	public void requestMove() {
@@ -175,7 +175,7 @@ public class GameController extends Controller {
 		}
 		
 		player.skipMove();
-		this.view.draw();
+		this.view.draw(true);
 	}
 	
 	public void end() {
@@ -202,7 +202,7 @@ public class GameController extends Controller {
 				tile.rotate();
 			}
 		}
-		this.view.draw();
+		this.view.draw(false);
 	}
 
 }

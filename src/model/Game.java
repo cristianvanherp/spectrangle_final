@@ -126,12 +126,18 @@ public class Game implements Runnable, Observer {
 	}
 	
 	public boolean canMakeMove(Player player) {
+		boolean result = false;
 		for(Tile tile: player.getTiles()) {
-			if(this.board.canBePlaced(tile)) {
-				return true;
+			for(int i = 0 ; i < 6 ; i++) {
+				tile.rotate();
+				if(this.board.canBePlaced(tile)) {
+					result = true;
+				}
 			}
+			
+			if(result) break;
 		}
-		return false;
+		return result;
 	}
 	
 	public Player nextPlayer() {	
@@ -266,6 +272,16 @@ public class Game implements Runnable, Observer {
 		case "drawnTile":
 			tile = attr.getTiles().get(0);
 			Messenger.broadcast(this.players, "drawnTile " + player.getNickname() + " " + tile.toString());
+			break;
+		case "switchedTile":
+			Tile oldTile = attr.getTiles().get(0);
+			Tile newTile = attr.getTiles().get(1);
+			Messenger.broadcast(this.players, "switchedTile " + player.getNickname() + " " + oldTile + " " + newTile);
+		case "skippedMove":
+			Messenger.broadcast(this.players, "skippedMove " + player.getNickname());
+			break;
+		case "playerLeft":
+			Messenger.broadcast(this.players, "players " + this.getPlayersStr());
 			break;
 		default:
 			break;

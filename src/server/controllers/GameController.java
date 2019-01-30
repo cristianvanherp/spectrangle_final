@@ -5,6 +5,7 @@ import java.util.List;
 import abstract_classes.Controller;
 import input.*;
 import networking.Peer;
+import observer.ActionAttribute;
 import server.ServerDatabase;
 import model.*;
 
@@ -70,7 +71,7 @@ public class GameController extends Controller {
 		}
 		
 		if(status == 0) {
-			player.getGame().setTurn(new Player("joseph"));
+			player.getGame().setTurn(new HumanPlayer("joseph", null));
 		}
 	}
 	
@@ -88,7 +89,6 @@ public class GameController extends Controller {
 			peer.write("404 You don't have that tile or it can be played. Try again.");
 			break;
 		default:
-			Messenger.broadcast(player.getGame().getPlayers(), "switchedTile " + player.getNickname() + " " + tileStr + " " + player.lastTile().toString());
 			break;
 		}
 	}
@@ -104,7 +104,6 @@ public class GameController extends Controller {
 			peer.write("403 It's either not your turn or you can place a tile.");
 			break;
 		default:
-			Messenger.broadcast(player.getGame().getPlayers(), "skippedMove " + player.getNickname());
 			break;
 		}
 	}
@@ -119,7 +118,6 @@ public class GameController extends Controller {
 		}
 		
 		player.leaveGame();
-		Messenger.broadcast(game.getPlayers(), "players " + game.getPlayersStr());
 	}
 
 }

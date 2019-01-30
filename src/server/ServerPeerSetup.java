@@ -25,7 +25,7 @@ public class ServerPeerSetup implements Setup {
 	//***************************************************
 	@Override
 	public void run() {
-		Player player = new Player(null, this.peer);
+		Player player = new HumanPlayer(null, this.peer);
 		
 		try {
 			this.database.insertUser(peer, player);

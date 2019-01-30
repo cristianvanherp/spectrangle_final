@@ -18,7 +18,7 @@ public class GameView {
 	//***************************************************
 	//---------------------PUBLIC METHODS----------------
 	//***************************************************
-	public void draw() {
+	public void draw(boolean showEntry) {
 		this.clear();
 		
 		Board board = this.game.getBoard();
@@ -30,7 +30,7 @@ public class GameView {
 			Tile.draw(player.getTiles());
 		}
 		
-		System.out.print("> ");
+		if(showEntry) System.out.print("> ");
 	}
 	
 	//***************************************************
