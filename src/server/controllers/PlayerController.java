@@ -21,7 +21,7 @@ public class PlayerController extends Controller {
 	//***************************************************
 	@Override
 	public void forward(Peer peer, Message msg) {
-		switch(msg.getCommand()) {
+		switch(msg.getCommand().toLowerCase()) {
 		case "nickname":
 			if(msg.getArgs().size() < 1) return;
 			this.nickname(peer, msg.getStringArgs());

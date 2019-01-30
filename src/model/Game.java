@@ -12,7 +12,7 @@ public class Game implements Runnable, Observer {
 	//***************************************************
 	//------------------CONSTANTS------------------------
 	//***************************************************
-	public static final int MIN_PLAYERS = 1;
+	public static final int MIN_PLAYERS = 2;
 	public static final int MAX_PLAYERS = 4;
 	
 	//***************************************************
@@ -245,7 +245,6 @@ public class Game implements Runnable, Observer {
 				else {
 					player.drawTile();		
 				}
-				this.setTurn(player);
 			}
 		}
 	}

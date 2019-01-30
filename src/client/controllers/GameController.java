@@ -28,28 +28,28 @@ public class GameController extends Controller {
 	//***************************************************
 	@Override
 	public void forward(Peer peer, Message msg) {
-		switch(msg.getCommand()) {
+		switch(msg.getCommand().toLowerCase()) {
 		case "start":
 			if(msg.getArgs().size() < Game.MIN_PLAYERS) return;
 			this.start(msg.getArgs());
 			break;
-		case "drawnTile":
+		case "drawntile":
 			if(msg.getArgs().size() < 2) return;
 			this.drawnTile(msg.getArgs().get(0), msg.getArgs().get(1));
 			break;
-		case "placedTile":
+		case "placedtile":
 			if(msg.getArgs().size() < 3) return;
 			this.placedTile(msg.getArgs().get(0), msg.getArgs().get(1), msg.getArgs().get(2));
 			break;
-		case "switchedTile":
+		case "switchedtile":
 			if(msg.getArgs().size() < 3) return;
 			this.switchedTile(msg.getArgs().get(0), msg.getArgs().get(1), msg.getArgs().get(2));
 			break;
-		case "skippedMove":
+		case "skippedmove":
 			if(msg.getArgs().size() < 1) return;
 			this.skippedMove(msg.getArgs().get(0));
 			break;
-		case "requestMove":
+		case "requestmove":
 			this.requestMove();
 			break;
 		case "rotate":

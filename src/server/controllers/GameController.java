@@ -22,16 +22,16 @@ public class GameController extends Controller {
 	//***************************************************
 	@Override
 	public void forward(Peer peer, Message msg) {
-		switch(msg.getCommand()) {
-		case "placeTile":			
+		switch(msg.getCommand().toLowerCase()) {
+		case "placetile":			
 			if(msg.getArgs().size() < 2) return;
 			this.placeTile(peer, msg.getArgs().get(0), msg.getArgs().get(1));
 			break;
-		case "switchTile":
+		case "switchtile":
 			if(msg.getArgs().size() < 1) return;
 			this.switchTile(peer, msg.getArgs().get(0));
 			break;
-		case "skipMove":
+		case "skipmove":
 			this.skipMove(peer);
 			break;
 		case "leave":
@@ -68,10 +68,6 @@ public class GameController extends Controller {
 			break;
 		default:
 			break;
-		}
-		
-		if(status == 0) {
-			player.getGame().setTurn(new HumanPlayer("joseph", null));
 		}
 	}
 	
