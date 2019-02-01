@@ -44,10 +44,10 @@ public class Client {
 	//***************************************************
 	public static void main(String args[]) throws InterruptedException {
 		try {
-			Client client = new Client("127.0.0.1", 9091);
+			Client client = new Client("130.89.82.154", 9091);
 			client.database.getInputThread().begin();
-			
-		} catch (UnknownHostException e) {
+		
+		} catch (UnknownHostException e) { 
 			System.out.println("Could not find host. Terminating!");
 		} catch (IOException e) {
 			System.out.println("An error ocurred. Terminating!");

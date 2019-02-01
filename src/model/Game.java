@@ -32,6 +32,7 @@ public class Game implements Runnable, Observer {
 	//***************************************************
 	//------------------CONSTRUCTORS---------------------
 	//***************************************************
+	
 	public Game(List<Player> players, Player host) {
 		if(players.size() < Game.MIN_PLAYERS || players.size() > Game.MAX_PLAYERS) {
 			//Throw an exception
@@ -54,7 +55,8 @@ public class Game implements Runnable, Observer {
 		this.status = Status.RUNNING;
 	}
 	
-	public String getPlayersStr() {
+	//@ensures !\result.equals(null);
+	/*@ pure*/public String getPlayersStr() {
 		String str = "";
 		for(Player player: this.players) {
 			str += player.getNickname() + " ";
@@ -62,7 +64,12 @@ public class Game implements Runnable, Observer {
 		
 		return str.trim();
 	}
-	
+	//@ requires this.getPlayers().contains(player) && player.getTiles().contains(tile) && index>=0 && index <=this.getBoard().LENGTH;
+	//@ ensures !this.getTurn().equals(player) ==> \result==403;
+	//@ ensures this.getBoard().placeTile(tile, index)==-1 ==> \result == 404;
+	//@ ensures player.getScore()>=\old(player.getScore());
+	//@ ensures  this.getTurn().equals(this.nextPlayer());
+	//@ ensures player.getTiles().size()<=\old(player.getTiles().size());
 	public int placeTile(Player player, int index, Tile tile) {
 		Integer points;
 		
@@ -82,6 +89,9 @@ public class Game implements Runnable, Observer {
 		return 0;
 	}
 	
+	//@ requires this.getPlayers().contains(player) && player.getTiles().contains(tile);
+	//@ ensures !this.getTurn().equals(player) || this.canMakeMove(player) ==> \result==403;
+	//@ ensures  this.getTurn().equals(this.nextPlayer());
 	public int switchTile(Player player, Tile tile) {
 		
 		if(!this.getTurn().equals(player)) {
@@ -99,6 +109,9 @@ public class Game implements Runnable, Observer {
 		return 0;
 	}
 	
+	//@ requires this.getPlayers().contains(player) && player.getTiles().contains(tile) && !newTileStr.equals(null);
+	//@ ensures !this.getTurn().equals(player) || this.canMakeMove(player) ==> \result==403;
+	//@ ensures  this.getTurn().equals(this.nextPlayer());
 	public int switchTile(Player player, Tile tile, String newTileStr) {
 		
 		if(!this.getTurn().equals(player)) {
@@ -116,6 +129,8 @@ public class Game implements Runnable, Observer {
 		return 0;
 	}
 	
+	//@ requires player!=null && this.getPlayers().contains(player);
+	//@ ensures this.canMakeMove(player) ==> \result==403; 
 	public int skipMove(Player player) {
 		if(this.canMakeMove(player)) {
 			return 403;
@@ -125,7 +140,9 @@ public class Game implements Runnable, Observer {
 		return 0;
 	}
 	
-	public boolean canMakeMove(Player player) {
+	//@ requires player!=null && this.getPlayers().contains(player);
+	//@ ensures (\exists Tile t; player.getTiles().contains(t) && this.getBoard().canBePlaced(t);\result==true);
+	/*@ pure*/public boolean canMakeMove(Player player) {
 		boolean result = false;
 		for(Tile tile: player.getTiles()) {
 			for(int i = 0 ; i < 6 ; i++) {
@@ -140,7 +157,9 @@ public class Game implements Runnable, Observer {
 		return result;
 	}
 	
-	public Player nextPlayer() {	
+	//@ ensures (this.getPlayers().contains(\result));
+	//@ ensures this.getPlayers().indexOf(this.getTurn())<this.getPlayers().size() ==> \result.equals(this.getPlayers().get(1+this.getPlayers().indexOf(this.getTurn())));
+	/*@ pure*/public Player nextPlayer() {	
 		Integer index = this.players.indexOf(this.turn) + 1;
 		Player next = this.players.get(0);
 		
@@ -150,7 +169,9 @@ public class Game implements Runnable, Observer {
 		
 		return next;
 	}
-	
+	//@ requires this.getPlayers().contains(player);
+	//@ ensures !(this.getPlayers().contains(player)) && player.getScore()==0;
+	//@ensures this.getBag().getTiles().size()==4+\old(this.getBag().getTiles().size());
 	public void leaveGame(Player player) {
 		this.bag.getTiles().addAll(player.getTiles());
 		player.setTiles(new ArrayList<Tile>());
@@ -161,6 +182,9 @@ public class Game implements Runnable, Observer {
 	//***************************************************
 	//------------------PRIVATE METHODS------------------
 	//***************************************************
+	
+	//@ ensures this.getBoard()!=null && this.getBag()!=null && this.status==Status.NOT_STARTED;
+	//@ ensures (\forall Player p; this.getPlayers().contains(p); p.getGame().equals(this) && p.getScore()==0 );
 	private void init() {
 		this.board = new Board();
 		this.bag = new Bag();
@@ -177,34 +201,46 @@ public class Game implements Runnable, Observer {
 	//***************************************************
 	//------------------GETTERS/SETTERS------------------
 	//***************************************************
-	public Bag getBag() {
+	//@ensures !(\result.equals(null));
+	/*@ pure*/public Bag getBag() {
 		return bag;
 	}
 
+	//@requires bag!=null;
+	//@ensures this.getBag().equals(bag);
 	public void setBag(Bag bag) {
 		this.bag = bag;
 	}
 	
-	public List<Player> getPlayers() {
+	//@ensures !(\result.equals(null));
+	/*@ pure*/public List<Player> getPlayers() {
 		return players;
 	}
 
+	//@ requires players!=null;
+	//@ ensures this.getPlayers().equals(players);
 	public void setPlayers(List<Player> players) {
 		this.players = players;
 	}
 
-	public Board getBoard() {
+	//@ensures \result!=null;
+	/*@ pure*/public Board getBoard() {
 		return board;
 	}
 
+	//@ requires board!=null;
+	//@ ensures this.getBoard()==board;
 	public void setBoard(Board board) {
 		this.board = board;
 	}
 
-	public Player getTurn() {
+	//@ensures \result!=null;
+	/*@ pure*/public Player getTurn() {
 		return turn;
 	}
 
+	//@requires this.getPlayers().contains(turn);
+	//@ensures this.getTurn().equals(turn);
 	public void setTurn(Player turn) {
 		this.turn = turn;
 	}
@@ -252,6 +288,9 @@ public class Game implements Runnable, Observer {
 	//***************************************************
 	//------------------OBSERVER METHODS-----------------
 	//***************************************************
+	
+	//@ requires arg0!=null && arg1!=null;
+	//@ requires ((ActionAttribute)arg1).getPlayers().get(0).getPeer()!=null;
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		ActionAttribute attr = (ActionAttribute)arg1;

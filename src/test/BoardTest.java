@@ -85,6 +85,7 @@ public class BoardTest {
 		Board board=new Board();
 	    Tile tile=new Tile(Orientation.UP,'R','R','R',6);
 		
+	    
 	    board.placeTile(tile,0);
 		assertTrue(board.getSlotOfCoord(0,0).getTile().equals(tile));
 		
@@ -99,13 +100,16 @@ public class BoardTest {
 		Board board=new Board();
 	    Tile tile=new Tile(Orientation.UP,'R','R','R',6);
 	    
+	    board.placeTile(tile, 2);
 	    board.placeTile(tile, 1);
-	    board.placeTile(tile, 0);
-	    assertEquals(board.canBePlaced(board.getSlotOfCoord(1, 0), tile),2);
+	    board.placeTile(tile, 5);
+	    board.placeTile(tile, 6);
+	    board.placeTile(tile, 7);
+	   // assertEquals(board.canBePlaced(board.getSlotOfCoord(1, 1), tile),2);
 	    
-	    Tile tile2= new Tile(Orientation.UP,'G', 'G','G',6);
-	    board.placeTile(tile2, 3);
-	    assertEquals(board.canBePlaced(board.getSlotOfCoord(1, 0), tile2),0);
+	    Tile tile5= new Tile(Orientation.UP,'G', 'G','G',6);
+	    board.placeTile(tile5, 3);
+	    assertEquals(board.canBePlaced(board.getSlotOfCoord(1, 1), tile5),0);
 
 	    
 	    

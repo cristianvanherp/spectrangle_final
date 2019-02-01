@@ -28,6 +28,10 @@ public class Board {
 	//***************************************************
 	//------------------PUBLIC METHODS------------------
 	//***************************************************
+	
+	//@ requires tile!=null && index>=0 && index<=this.LENGTH;
+	//@ ensures tile==null ==> \result== -1;
+	//@ ensures !this.canBePlaced(tile) ==> \result== -1;
 	public int placeTile(Tile tile, int index) {
 		Slot slot = null;
 		Integer points = 0;
@@ -60,7 +64,8 @@ public class Board {
 		
 		return points;
 	}
-	
+	//@ requires slot!=null && tile !=null;
+	//@ ensures \result>=0 && \result<=3 ;
 	public int canBePlaced(Slot slot, Tile tile) {
 		int edges = 0;
 		int matching_edges = 0;
@@ -115,8 +120,9 @@ public class Board {
 				
 		return matching_edges;
 	}
-	
-	public boolean canBePlaced(Tile tile) {
+	//@ requires tile!=null;
+	//@ ensures (\exists Slot s; this.getSlots().contains(s) && this.canBePlaced(s,tile)!=0; \result== true ); 
+	/*@ pure*/public boolean canBePlaced(Tile tile) {
 		if(this.isEmpty()) {
 			return true;
 		}
@@ -130,7 +136,8 @@ public class Board {
 		return false;
 	}
 
-	public String toString() {
+	//@ ensures \result!=null;
+	/*@ pure*/public String toString() {
 		List<Integer> values = new ArrayList<Integer>();
 		List<Character> vertical = new ArrayList<Character>();
 		List<Character> left = new ArrayList<Character>();
@@ -162,6 +169,13 @@ public class Board {
 	//***************************************************
 	//------------------PRIVATE METHODS------------------
 	//***************************************************
+	
+	//@ ensures  this.getSlots()!=null && this.getSlots().size()==this.LENGTH;
+    //@ ensures (\forall Slot s; this.getSlots().contains(s) ; s.getOrientation()!=null);
+	//@ ensures (\forall Slot s; this.getSlots().contains(s) && (s.getIndex() == 11 || s.getIndex() == 13 || s.getIndex() == 20  || s.getIndex() == 2 || s.getIndex() == 26 || s.getIndex() == 34 || s.getIndex() == 10 || s.getIndex() == 14 || s.getIndex() == 30) ; s.getBonus()!=1);
+	//@ ensures  (\forall Slot s; this.getSlots().contains(s) && (columnOfIndex(s.getIndex())!=(-1)*rowOfIndex(s.getIndex())); s.getLeft().getIndex()==-1);
+	//@ ensures  (\forall Slot s; this.getSlots().contains(s) && (columnOfIndex(s.getIndex())==rowOfIndex(s.getIndex())); s.getRight().getIndex()==-1);
+	//@ ensures  (\forall Slot s; this.getSlots().contains(s) && 5==rowOfIndex(s.getIndex()) && s.getOrientation()==Orientation.UP; s.getVertical().getIndex()==-1);
 	private void init() {
 		Slot slot;
 		for(int i = 0 ; i < Board.LENGTH ; i++) {
@@ -222,11 +236,15 @@ public class Board {
 		}
 	}
 	
-	public int coordToIndex(int row, int col) {
+	//@ requires 0 <= row && row<=5 && -5<=col && col<= 5;
+	//@ ensures \result >=0 && \result <= this.LENGTH;
+	/*@ pure*/public int coordToIndex(int row, int col) {
 		return (row*row) + row + col;
 	}
 
-	public int rowOfIndex(int x) {
+	//@requires x<=this.LENGTH && x>=0;
+	//@ensures  0 <= \result && \result<=5;
+	/*@ pure*/public int rowOfIndex(int x) {
 
 		for(int i=0;i<=5;i++) {
 			if ( x>=i*i && x<(i+1)*(i+1) )
@@ -235,7 +253,9 @@ public class Board {
 		return -1;
 	}
 
-	public int columnOfIndex(int x) {
+	//@ requires x<=this.LENGTH && x>=0;
+	//@ ensures -5<=\result && \result<= 5;
+	/*@ pure*/public int columnOfIndex(int x) {
 		int r=rowOfIndex(x);
 		if(x<r*(r+1)) {
 			int i=0;
@@ -256,7 +276,9 @@ public class Board {
 		return -15;
 	}
 
-	public Slot getSlotOfCoord(int r, int c) {
+	//@ requires 0 <= r && r<=5 && -5<=c && c<= 5;
+	//@ ensures \result !=null;
+	/*@ pure*/public Slot getSlotOfCoord(int r, int c) {
 
 		for(Slot s: this.slots) {
 			if(columnOfIndex(s.getIndex())==c && rowOfIndex(s.getIndex())==r)
@@ -265,7 +287,12 @@ public class Board {
 		return null;
 	}
 	
-	public boolean isEmpty() {
+	/*
+	 * @pure; ensures (\exists Slot s; s.getSlots().contains(s) && s.getTile()!=null; \result==false);
+	 * 
+	 */
+	//@ ensures (\exists Slot s; this.getSlots().contains(s) && s.getTile()!=null; \result==false);
+	/*@ pure*/public boolean isEmpty() {
 		for(Slot slot: this.slots) {
 			if(slot.getTile() != null) {
 				return false;
@@ -274,7 +301,8 @@ public class Board {
 		return true;
 	}
 	
-	public List<Slot> getSlots() {
+	// @ensures \result.equals(this.slots);
+	/*@ pure*/public List<Slot> getSlots() {
 		return slots;
 	}
 }
