@@ -6,6 +6,7 @@ import abstract_classes.Controller;
 import input.Message;
 import networking.Peer;
 import client.*;
+import exceptions.NotEnoughPlayers;
 import model.*;
 import view.*;
 
@@ -63,6 +64,9 @@ public class GameController extends Controller {
 				this.requestMove();
 				break;
 			case "rotate":
+				if (msg.getArgs().size() < 1) {
+					return;
+				}
 				this.rotate(msg.getArgs().get(0));
 				break;
 			case "players":
@@ -97,7 +101,14 @@ public class GameController extends Controller {
 			}
 		}
 
-		Game game = new Game(players, null);
+		Game game = null;
+		try {
+			game = new Game(players, null);
+		} catch (NotEnoughPlayers e) {
+			e.printStackTrace();
+			return;
+		}
+		
 		database.setGame(game);
 		this.view.setGame(game);
 		this.view.draw(true);

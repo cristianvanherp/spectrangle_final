@@ -2,6 +2,7 @@ package server;
 
 import java.util.*;
 
+import exceptions.NotEnoughPlayers;
 import model.*;
 
 public class ServerManager implements Runnable {
@@ -41,7 +42,14 @@ public class ServerManager implements Runnable {
 
 		if (players.size() >= Game.MIN_PLAYERS) {
 			Player host = players.get(0);
-			Game game = new Game(players, host);
+			Game game = null;
+			
+			try {
+				game = new Game(players, host);
+			} catch (NotEnoughPlayers e) {
+				e.printStackTrace();
+				return;
+			}
 
 			game.start();
 			this.database.insertGame(game);

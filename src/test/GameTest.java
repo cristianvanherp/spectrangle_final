@@ -5,18 +5,20 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 import enums.*;
+import exceptions.NotEnoughPlayers;
 import model.*;
 import java.util.*;
 
 public class GameTest {
 
 	@Test
-	public void testInitialConditions() {
+	public void testInitialConditions() throws NotEnoughPlayers {
 		// initialising a new game with only one player
 		HumanPlayer player = new HumanPlayer("RandomName");
 		HumanPlayer host = new HumanPlayer("Host");
 		List<Player> jucatori = new ArrayList<Player>();
 		jucatori.add(player);
+		jucatori.add(host);
 		Game game = new Game(jucatori, host);
 
 		// testing if the constructor does its job
@@ -27,7 +29,7 @@ public class GameTest {
 	}
 
 	@Test
-	public void testGetPlayerStr() {
+	public void testGetPlayerStr() throws NotEnoughPlayers {
 		// initialising a game with two players
 		HumanPlayer player1 = new HumanPlayer("RandomName");
 		HumanPlayer player2 = new HumanPlayer("RandomName2");
@@ -43,12 +45,13 @@ public class GameTest {
 	}
 
 	@Test
-	public void testPlaceTile() {
+	public void testPlaceTile() throws NotEnoughPlayers {
 		// initialising a game
 		HumanPlayer player = new HumanPlayer("name");
 		HumanPlayer host = new HumanPlayer("Host");
 		List<Player> jucatori = new ArrayList<Player>();
 		jucatori.add(player);
+		jucatori.add(host);
 		Game game = new Game(jucatori, host);
 
 		// initialising a tile
@@ -63,7 +66,7 @@ public class GameTest {
 	}
 
 	@Test
-	public void testLeaveGame() {
+	public void testLeaveGame() throws NotEnoughPlayers {
 		// initialising players
 		HumanPlayer player = new HumanPlayer("RandomName");
 		HumanPlayer player2 = new HumanPlayer("RandomName2");
@@ -82,12 +85,13 @@ public class GameTest {
 	}
 
 	@Test
-	public void testCanMakeMove() {
+	public void testCanMakeMove() throws NotEnoughPlayers {
 		// initialising a new game
 		HumanPlayer player = new HumanPlayer("name");
 		HumanPlayer host = new HumanPlayer("Host");
 		List<Player> jucatori = new ArrayList<Player>();
 		jucatori.add(player);
+		jucatori.add(host);
 		Game game = new Game(jucatori, host);
 
 		// initialising a new tile
@@ -108,7 +112,7 @@ public class GameTest {
 	}
 
 	@Test
-	public void testNextPlayer() {
+	public void testNextPlayer() throws NotEnoughPlayers {
 		// creating 3 different players
 		HumanPlayer player = new HumanPlayer("RandomName");
 		HumanPlayer player2 = new HumanPlayer("RandomName2");
@@ -131,12 +135,13 @@ public class GameTest {
 	}
 
 	@Test
-	public void testSwitchTile() {
+	public void testSwitchTile() throws NotEnoughPlayers {
 		// creating a new game
 		HumanPlayer player = new HumanPlayer("name");
 		HumanPlayer host = new HumanPlayer("Host");
 		List<Player> jucatori = new ArrayList<Player>();
 		jucatori.add(player);
+		jucatori.add(host);
 		Game game = new Game(jucatori, host);
 
 		// creating 2 different tiles
@@ -164,13 +169,14 @@ public class GameTest {
 	}
 
 	@Test
-	public void testSwitchTile2() {
+	public void testSwitchTile2() throws NotEnoughPlayers {
 
 		// creating a new game
 		HumanPlayer player = new HumanPlayer("name");
 		HumanPlayer host = new HumanPlayer("Host");
 		List<Player> jucatori = new ArrayList<Player>();
 		jucatori.add(player);
+		jucatori.add(host);
 		Game game = new Game(jucatori, host);
 
 		// creating 2 different tiles
@@ -198,7 +204,7 @@ public class GameTest {
 	}
 
 	@Test
-	public void testSkipMove() {
+	public void testSkipMove() throws NotEnoughPlayers {
 		// creating 3 different players
 		HumanPlayer player = new HumanPlayer("RandomName");
 		HumanPlayer player2 = new HumanPlayer("RandomName2");

@@ -6,6 +6,7 @@ import enums.Status;
 import input.Messenger;
 import networking.*;
 import observer.ActionAttribute;
+import exceptions.*;
 
 public class Game implements Runnable, Observer {
 	// ***************************************************
@@ -32,13 +33,9 @@ public class Game implements Runnable, Observer {
 	// ------------------CONSTRUCTORS---------------------
 	// ***************************************************
 
-	public Game(List<Player> players, Player host) {
+	public Game(List<Player> players, Player host) throws NotEnoughPlayers {
 		if (players.size() < Game.MIN_PLAYERS || players.size() > Game.MAX_PLAYERS) {
-			// Throw an exception
-		}
-
-		if (!players.contains(host)) {
-			// Throw an exception
+			throw new NotEnoughPlayers("There aren't enough players to start a game.");
 		}
 
 		this.players = players;
@@ -309,19 +306,16 @@ public class Game implements Runnable, Observer {
 			case "placedTile":
 				Integer index = attr.getIndex().get(0);
 				tile = attr.getTiles().get(0);
-				Messenger.broadcast(this.players,
-					"placedTile " + player.getNickname() + " " + index + " " + tile.toString());
+				Messenger.broadcast(this.players, "placedTile " + player.getNickname() + " " + index + " " + tile.toString());
 				break;
 			case "drawnTile":
 				tile = attr.getTiles().get(0);
-				Messenger.broadcast(this.players, 
-						"drawnTile " + player.getNickname() + " " + tile.toString());
+				Messenger.broadcast(this.players, "drawnTile " + player.getNickname() + " " + tile.toString());
 				break;
 			case "switchedTile":
 				Tile oldTile = attr.getTiles().get(0);
 				Tile newTile = attr.getTiles().get(1);
-				Messenger.broadcast(this.players,
-						"switchedTile " + player.getNickname() + " " + oldTile + " " + newTile);
+				Messenger.broadcast(this.players, "switchedTile " + player.getNickname() + " " + oldTile + " " + newTile);
 		    case "skippedMove":
 				Messenger.broadcast(this.players, "skippedMove " + player.getNickname());
 				break;

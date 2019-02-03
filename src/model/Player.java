@@ -9,7 +9,6 @@ public abstract class Player extends Observable {
 	// ------------------RELATIONSHIPS---------------------
 	// ***************************************************
 	private Game game;
-	private Lobby lobby;
 	private List<Tile> tiles;
 
 	// ***************************************************
@@ -250,17 +249,6 @@ public abstract class Player extends Observable {
 	// @ ensures this.getNickname().equals(null);
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
-	}
-
-	// @ ensures !\result.equals(null);
-	/* @ pure */public Lobby getLobby() {
-		return lobby;
-	}
-
-	// @ requires !lobby.equals(null);
-	// @ ensures this.getLobby().equals(lobby);
-	public void setLobby(Lobby lobby) {
-		this.lobby = lobby;
 	}
 
 	// @ ensures !\result.equals(null);

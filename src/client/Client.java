@@ -43,8 +43,20 @@ public class Client {
 	// ---------------------THREAD------------------------
 	// ***************************************************
 	public static void main(String[] args) throws InterruptedException {
+		String ip_addr;
+		Integer port;
+		
+		ip_addr = args[0];
+		
 		try {
-			Client client = new Client("130.89.82.154", 9091);
+			port = Integer.parseInt(args[1]);
+		} catch(NumberFormatException e) {
+			System.out.println("Invalid port. Terminating!");
+			return;
+		}
+		
+		try {
+			Client client = new Client(ip_addr, port);
 			client.database.getInputThread().begin();
 
 		} catch (UnknownHostException e) {
