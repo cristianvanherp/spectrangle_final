@@ -7,15 +7,15 @@ import model.Player;
 import networking.*;
 
 public class Messenger {
-	//***************************************************
-	//---------------------ATTRIBUTES--------------------
-	//***************************************************
+	// ***************************************************
+	// ---------------------ATTRIBUTES--------------------
+	// ***************************************************
 	private List<Controller> controllers;
 	private List<Integer> statusCodes;
-	
-	//***************************************************
-	//---------------------CONSTRUCTORS------------------
-	//***************************************************
+
+	// ***************************************************
+	// ---------------------CONSTRUCTORS------------------
+	// ***************************************************
 	public Messenger(List<Controller> controllers) {
 		this.controllers = controllers;
 		this.statusCodes = new ArrayList<Integer>();
@@ -23,38 +23,39 @@ public class Messenger {
 		this.statusCodes.add(403);
 		this.statusCodes.add(404);
 	}
-	
-	//***************************************************
-	//---------------------PUBLIC METHODS----------------
-	//***************************************************	
+
+	// ***************************************************
+	// ---------------------PUBLIC METHODS----------------
+	// ***************************************************
 	public void forward(Peer peer, String message) {
 		Message msg = new Message(message);
-		
-		if(msg.getStatusCode() != null) {
+
+		if (msg.getStatusCode() != null) {
 			this.printStatusCode(peer, msg);
 			return;
 		}
+
 		
-		for(Controller controller: this.controllers) {
-			if(controller.hasMethod(msg.getCommand())) {
+		for (Controller controller : this.controllers) {
+			if (controller.hasMethod(msg.getCommand())) {
 				controller.forward(peer, msg);
 			}
 		}
 	}
-	
-	//***************************************************
-	//---------------------PRIVATE METHODS---------------
-	//***************************************************
+
+	// ***************************************************
+	// ---------------------PRIVATE METHODS---------------
+	// ***************************************************
 	private void printStatusCode(Peer peer, Message msg) {
-		System.out.println(msg.getStatusCode() + ": "+ msg.getStringArgs());
+		System.out.println(msg.getStatusCode() + ": " + msg.getStringArgs());
 		System.out.print("> ");
 	}
-	
-	//***************************************************
-	//---------------------STATIC METHODS----------------
-	//***************************************************	
+
+	// ***************************************************
+	// ---------------------STATIC METHODS----------------
+	// ***************************************************
 	public static void broadcast(List<Player> players, String msg) {
-		for(Player player: players) {
+		for (Player player : players) {
 			player.getPeer().write(msg);
 		}
 	}

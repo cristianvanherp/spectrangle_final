@@ -1,6 +1,5 @@
 package client;
 
-import java.net.*;
 
 import input.InputThread;
 import interfaces.*;

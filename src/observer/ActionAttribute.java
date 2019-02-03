@@ -8,22 +8,22 @@ public class ActionAttribute {
 	private List<Player> players;
 	private List<Integer> indexes;
 	private String action;
-	
+
 	public ActionAttribute(String action) {
 		this.action = action;
 		this.tiles = new ArrayList<Tile>();
 		this.players = new ArrayList<Player>();
 		this.indexes = new ArrayList<Integer>();
 	}
-	
+
 	public void addTile(Tile tile) {
 		this.tiles.add(tile);
 	}
-	
+
 	public void addPlayer(Player player) {
 		this.players.add(player);
 	}
-	
+
 	public void addIndex(Integer index) {
 		this.indexes.add(index);
 	}

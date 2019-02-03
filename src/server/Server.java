@@ -10,74 +10,76 @@ import input.*;
 import server.controllers.*;
 
 public class Server implements Observer {
-	//***************************************************
-	//---------------------ATTRIBUTES--------------------
-	//***************************************************
+	// ***************************************************
+	// ---------------------ATTRIBUTES--------------------
+	// ***************************************************
 	private Integer port;
 	private ServerSocket socket;
 	private ServerDatabase database;
 	private Messenger messenger;
-	
-	//***************************************************
-	//---------------------CONSTRUCTORS------------------
-	//***************************************************
+
+	// ***************************************************
+	// ---------------------CONSTRUCTORS------------------
+	// ***************************************************
 	public Server(Integer port) throws IOException {
 		this.port = port;
 		this.database = new ServerDatabase();
 		this.socket = new ServerSocket(this.port);
-		
-		//Controller list
+
+		// Controller list
 		List<Controller> controllers = new ArrayList<Controller>();
 		controllers.add(new PlayerController(this.database));
 		controllers.add(new GameController(this.database));
-		
-		//Message handler
+
+		// Message handler
 		this.messenger = new Messenger(controllers);
 	}
-	
-	//***************************************************
-	//---------------------THREAD------------------------
-	//***************************************************
-	public static void main(String args[]) {
+
+	// ***************************************************
+	// ---------------------THREAD------------------------
+	// ***************************************************
+	public static void main(String[] args) {
 		ServerManager manager;
 		Server server;
 		Peer peer;
-		
+
 		try {
 			server = new Server(9091);
 		} catch (IOException e) {
 			System.out.println("Unable to start the server. Terminating!");
 			return;
 		}
-		
+
 		manager = new ServerManager(server.database);
 		new Thread(manager).start();
-		
-		while(true) {
+
+		while (true) {
 			try {
-				peer = new Peer(server.socket.accept(), server.messenger, new ServerPeerSetup(server.database));
+				peer = new Peer(server.socket.accept(), server.messenger,
+						new ServerPeerSetup(server.database));
 				peer.addObserver(server);
-				
+
 				server.database.insertPeer(peer);
 			} catch (IOException e) {
 				System.out.println("Client failed to connect. Terminating!");
 				return;
 			}
 		}
-		
+
 	}
-	
-	//***************************************************
-	//---------------------OBSERVER METHODS--------------
-	//***************************************************
+
+	// ***************************************************
+	// ---------------------OBSERVER METHODS--------------
+	// ***************************************************
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		Peer peer = (Peer)arg0;
-		String msg = (String)arg1;
-		
-		if(msg.equalsIgnoreCase("disconnected")) {
-			this.database.removePeer(peer);	
-			System.out.print("Client at " + peer.getAddress() + " has disconnected. Clients left: " + this.database.getPeers().size() + "\n");
+		Peer peer = (Peer) arg0;
+		String msg = (String) arg1;
+
+		if (msg.equalsIgnoreCase("disconnected")) {
+			this.database.removePeer(peer);
+			System.out.print("Client at " + peer.getAddress() + " has disconnected. Clients left: "
+					+ this.database.getPeers().size() + "\n");
 		}
 	}
 }
