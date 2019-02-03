@@ -45,9 +45,12 @@ public class Server implements Observer {
 		
 		Integer port;
 		try {
-			port = Integer.parseInt(args[1]);
+			port = Integer.parseInt(args[0]);
 		} catch(NumberFormatException e) {
 			System.out.println("Invalid port. Terminating!");
+			return;
+		} catch(ArrayIndexOutOfBoundsException e) {
+			System.out.println("Port missing!");
 			return;
 		}
 		

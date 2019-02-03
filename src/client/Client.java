@@ -46,12 +46,14 @@ public class Client {
 		String ip_addr;
 		Integer port;
 		
-		ip_addr = args[0];
-		
 		try {
+			ip_addr = args[0];
 			port = Integer.parseInt(args[1]);
 		} catch(NumberFormatException e) {
 			System.out.println("Invalid port. Terminating!");
+			return;
+		} catch(ArrayIndexOutOfBoundsException e) {
+			System.out.println("Argument missing. Terminating!");
 			return;
 		}
 		
